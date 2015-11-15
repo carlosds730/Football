@@ -17,7 +17,7 @@ class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
         verbose_name_plural = "Jugadores"
-        ordering = ['name']
+        ordering = ['-elo']
 
     name = models.CharField(verbose_name="Nombre", help_text="Nombre del jugador", max_length=200, unique=True)
 
@@ -29,9 +29,9 @@ class Player(models.Model):
 
     wins = models.PositiveSmallIntegerField(verbose_name="Juegos ganados", default=0)
 
-    draws = models.PositiveSmallIntegerField(verbose_name="Juegos empatados")
+    draws = models.PositiveSmallIntegerField(verbose_name="Juegos empatados", default=0)
 
-    losses = models.PositiveSmallIntegerField(verbose_name="Juegos perdidos")
+    losses = models.PositiveSmallIntegerField(verbose_name="Juegos perdidos", default=0)
 
     goals = models.PositiveSmallIntegerField(verbose_name="Goles anotados", default=0)
 
@@ -39,7 +39,11 @@ class Player(models.Model):
 
     elo = models.DecimalField(verbose_name="ELO", max_digits=7, decimal_places=5, default=0)
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
+        # self.calculate_player_stats()
         self.elo = self.calculate_elo()
         super(Player, self).save(*args, **kwargs)
 
@@ -49,6 +53,16 @@ class Player(models.Model):
     def calculate_player_stats(self):
         data = Stats.objects.filter(player=self).aggregate(Sum('games_played'), Sum('wins'), Sum('losses'),
                                                            Sum('draws'), Sum('goals'), Sum('assists'))
+        if data:
+            self.games_played = data['games_played__sum']
+            self.wins = data['wins__sum']
+            self.losses = data['losses__sum']
+            self.draws = data['draws__sum']
+            self.goals = data['goals__sum']
+            self.assists = data['assists__sum']
+            self.save()
+            self.calculate_elo()
+            self.save()
 
 
 class Fixture(models.Model):
@@ -87,6 +101,7 @@ class Fixture(models.Model):
         """
         Get the date of the next Fixture
         """
+
         a = cls.objects.first()
         if a:
             return a.date + datetime.timedelta(7)
@@ -105,17 +120,17 @@ class Stats(models.Model):
     fixture = models.ForeignKey('Fixture', verbose_name="Jornada", related_name="stats")
 
     # Numeric fields
-    games_played = models.PositiveSmallIntegerField(verbose_name="Juegos jugados")
+    games_played = models.PositiveSmallIntegerField(verbose_name="Juegos jugados", default=0)
 
-    wins = models.PositiveSmallIntegerField(verbose_name="Juegos ganados")
+    wins = models.PositiveSmallIntegerField(verbose_name="Juegos ganados", default=0)
 
-    draws = models.PositiveSmallIntegerField(verbose_name="Juegos empatados")
+    draws = models.PositiveSmallIntegerField(verbose_name="Juegos empatados", default=0)
 
-    losses = models.PositiveSmallIntegerField(verbose_name="Juegos perdidos")
+    losses = models.PositiveSmallIntegerField(verbose_name="Juegos perdidos", default=0)
 
-    goals = models.PositiveSmallIntegerField(verbose_name="Goles anotados")
+    goals = models.PositiveSmallIntegerField(verbose_name="Goles anotados", default=0)
 
-    assists = models.PositiveSmallIntegerField(verbose_name="Asistencias")
+    assists = models.PositiveSmallIntegerField(verbose_name="Asistencias", default=0)
 
     elo = models.DecimalField(verbose_name="ELO", max_digits=7, decimal_places=5, default=0)
 
@@ -123,12 +138,15 @@ class Stats(models.Model):
         validate_fixture(self.games_played, self.wins, self.losses, self.draws)
         self.elo = self.calculate_elo()
         super(Stats, self).save(*args, **kwargs)
-        self.update_player()
+        self.player.calculate_player_stats()
+        # self.update_player()
 
     def calculate_elo(self):
         return calculate_elo_simple(self.games_played, self.wins, self.losses, self.draws, self.goals, self.assists)
 
+    # WARNING: This shouldn't be used at least you can be sure the Stats object is being created and not updated
     def update_player(self):
+        print(self.player.name + str(self.fixture))
         player = self.player
         player.games_played += self.games_played
         player.wins += self.wins
