@@ -3,8 +3,6 @@ from django.db import models
 from sorl.thumbnail import ImageField
 from decimal import *
 from stats.extra_functions import validate_fixture
-from django.core.exceptions import ValidationError
-
 from django.db.models import Sum
 import datetime
 

@@ -14,7 +14,6 @@ django.setup()
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 
-
 def import_csv(path):
     csv_file = csv.reader(open(path, 'rb'))
 
