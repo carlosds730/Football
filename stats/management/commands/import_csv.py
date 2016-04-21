@@ -1,17 +1,14 @@
 __author__ = 'Carlos'
 # -*- coding: utf8 -*-
+
 import csv
 import os
 import sys
+from Football.settings import STATS_PATH
 from stats import models
 from stats.models import Player, Fixture, Stats
-from django.core.exceptions import AppRegistryNotReady
 import datetime
-import django
-
-django.setup()
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+from django.core.management.base import BaseCommand, CommandError
 
 
 def import_csv(path):
@@ -79,10 +76,10 @@ def test_error(path):
             stats.save()
 
 
-def test_error_one(path):
+def test_error_one(path, jornada):
     with open(path, newline='') as csvfile:
         line = csv.reader(csvfile, delimiter=',', quotechar='|')
-        line.__next__()
+        next(line)
         fixture = Fixture.objects.create()
         fixture.save()
 
@@ -110,12 +107,10 @@ def import_all_fixtures(path):
         f.append(int(re.search("\d+", x).group()))
 
     f.sort()
-
+    fixtures = [x.numero for x in Fixture.objects.all()]
     for file in f:
-        test_error_one(os.path.join('football_stats', 'jornada' + str(file) + '.csv'))
-
-
-# import_all_fixtures('football_stats')
+        if file not in fixtures:
+            test_error_one(os.path.join(path, 'jornada' + str(file) + '.csv'), file)
 
 
 def fix_dates(pk):
@@ -132,3 +127,14 @@ def fix_dates(pk):
         fixt.save()
     fix.date = fix.date + datetime.timedelta(7)
     fix.save()
+
+
+class Command(BaseCommand):
+    help = "Import all stats"
+
+    def handle(self, *args, **options):
+        try:
+            import_all_fixtures(STATS_PATH)
+        except Exception as e:
+            raise CommandError('Something went wrong "%s"' % e)
+        self.stdout.write(self.style.SUCCESS('Successfully countries import'))

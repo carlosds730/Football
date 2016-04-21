@@ -15,7 +15,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'd_uhqj0vfqg$6&qq#hbax)2u5u-d!6t6)8b#&c!7p8w4+-(w8)'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -73,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Football.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -84,6 +81,7 @@ DATABASES = {
     }
 }
 
+STATS_PATH = 'stats' + os.sep + 'management' + os.sep + 'commands' + os.sep + 'football_stats'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

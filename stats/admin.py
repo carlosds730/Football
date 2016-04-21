@@ -15,7 +15,7 @@ class StatsInline(admin.StackedInline):
 class PlayersAdmin(AdminImageMixin, admin.ModelAdmin):
     model = models.Player
     inlines = [StatsInline]
-    list_display = ['name', 'elo']
+    list_display = ['name', 'elo', 'goals', 'assists', 'wins', 'draws', 'losses']
     readonly_fields = ['games_played', 'wins', 'losses', 'draws', 'goals', 'assists', 'elo']
 
 

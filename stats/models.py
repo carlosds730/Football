@@ -9,6 +9,33 @@ import datetime
 from stats.extra_functions import calculate_elo_simple
 
 
+def get_next_fixture():
+    """
+    Get the number of the next Fixture
+    """
+
+    next_fixture = Fixture.objects.aggregate(
+        models.Max('numero')
+    )['numero__max']
+
+    if next_fixture:
+        return next_fixture + 1
+    else:
+        return 1
+
+
+def get_next_fixture_date():
+    """
+    Get the date of the next Fixture
+    """
+
+    a = Fixture.objects.first()
+    if a:
+        return a.date + datetime.timedelta(7)
+    else:
+        return datetime.date(2015, 6, 14)
+
+
 # Create your models here.
 
 class Player(models.Model):
@@ -67,44 +94,17 @@ class Fixture(models.Model):
     class Meta:
         verbose_name = "Jornada"
         verbose_name_plural = "Jornadas"
-        ordering = ['-date']
+        ordering = ['-numero']
 
     date = models.DateField(verbose_name="Fecha", help_text="Fecha de la jornada", unique=True,
-                            default=lambda: Fixture.get_next_fixture_date())
+                            default=get_next_fixture_date)
 
     image = ImageField(verbose_name="Foto", upload_to='Jornadas', help_text="Foto de la jornada", blank=True)
 
-    numero = models.PositiveSmallIntegerField(verbose_name="Jornada número", default=lambda: Fixture.get_next_fixture())
+    numero = models.PositiveSmallIntegerField(verbose_name="Jornada número", default=get_next_fixture)
 
     def __str__(self):
         return "Jornada " + str(self.numero)
-
-    @classmethod
-    def get_next_fixture(cls):
-        """
-        Get the number of the next Fixture
-        """
-
-        next_fixture = cls.objects.aggregate(
-            models.Max('numero')
-        )['numero__max']
-
-        if next_fixture:
-            return next_fixture + 1
-        else:
-            return 1
-
-    @classmethod
-    def get_next_fixture_date(cls):
-        """
-        Get the date of the next Fixture
-        """
-
-        a = cls.objects.first()
-        if a:
-            return a.date + datetime.timedelta(7)
-        else:
-            return datetime.date(2015, 6, 14)
 
 
 class Stats(models.Model):
