@@ -1,0 +1,738 @@
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+
+<!DOCTYPE html>
+
+<html lang="en'">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+{% block header %}
+    <head>
+        <meta charset="utf-8"/>
+        <title>Liga Tenis Roto</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta content="" name="description"/>
+        <meta content="T.O.W. PEB" name="author"/>
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=all'
+              rel='stylesheet' type='text/css'>
+        <link href="{% static 'plugins/socicon/socicon.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/bootstrap-social/bootstrap-social.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/simple-line-icons/simple-line-icons.min.css' %}" rel="stylesheet"
+              type="text/css"/>
+        <link href="{% static 'plugins/animate/animate.min.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN: BASE PLUGINS  -->
+        <link href="{% static 'plugins/revo-slider/css/settings.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/cubeportfolio/css/cubeportfolio.min.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/owl-carousel/owl.carousel.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/owl-carousel/owl.theme.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/owl-carousel/owl.transitions.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'plugins/fancybox/jquery.fancybox.css' %}" rel="stylesheet" type="text/css"/>
+        <!-- END: BASE PLUGINS -->
+        <!-- BEGIN THEME STYLES -->
+        <link href="{% static 'base/css/plugins.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'base/css/components.css' %}" id="style_components" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'base/css/themes/default.css' %}" rel="stylesheet" id="style_theme" type="text/css"/>
+        <link href="{% static 'base/css/custom.css' %}" rel="stylesheet" type="text/css"/>
+        <!-- END THEME STYLES -->
+        <link rel="shortcut icon" href="{% static 'images/LOGO.png' %}"/>
+    </head>
+{% endblock %}
+<body class="c-layout-header-fixed c-layout-header-6-topbar">
+<!-- BEGIN: LAYOUT/HEADERS/HEADER-2 -->
+<!-- BEGIN: HEADER 2 -->
+{% block body_header %}
+    <header class="c-layout-header c-layout-header-6 ">
+        <div class="c-topbar">
+            <div class="container">
+                <nav class="c-top-menu">
+                    <ul class="c-links c-theme-ul">
+                        <li>
+                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for clients' %}</a>
+                        </li>
+                        <li>
+                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for the traveler' %}</a>
+                        </li>
+                        <li class="c-divider">
+                        </li>
+                        <li>
+                            <a href="#" class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Contact' %}</a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" data-toggle="modal" data-target="#login-form"
+                               class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold">{% trans 'Log Out' %}</a>
+                        </li>
+                    </ul>
+                    <ul class="c-ext c-theme-ul">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        <li class="c-lang dropdown c-last">
+                            <a style="cursor: default;">{{ LANGUAGE_CODE }}</a>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                {% for lang in languages %}
+                                    <li>
+                                        <a href="/change-language/?lang={{ lang.code }}">{{ lang.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="c-search hide">
+                            <!-- BEGIN: QUICK SEARCH -->
+                            <form action="#">
+                                <input type="text" name="query" placeholder="search..." value="" class="form-control"
+                                       autocomplete="off">
+                                <i class="fa fa-search"></i>
+                            </form>
+                            <!-- END: QUICK SEARCH -->
+                        </li>
+                    </ul>
+                </nav>
+                <div class="c-brand">
+                    <a href="{% url 'home' %}" class="c-logo">
+                        <img src="{% static 'images/LOGO_20%.png' %}" alt="Viayou" class="c-desktop-logo">
+                        <img src="{% static 'images/LOGO_20%.png' %}" alt="Viayou" width="20%" height="20%"
+                             class="c-desktop-logo-inverse">
+                        <img src="{% static 'images/LOGO_20%.png' %}" alt="Viayou" width="20%" height="20%"
+                             class="c-mobile-logo">
+                    </a>
+                    <ul class="c-icons c-theme-ul">
+                        <li>
+                            <a href="#"><i class="icon-social-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="icon-social-twitter"></i></a>
+                        </li>
+                    </ul>
+                    <button class="c-hor-nav-toggler" type="button" data-target=".c-mega-menu">
+                        <span class="c-line"></span>
+                        <span class="c-line"></span>
+                        <span class="c-line"></span>
+                    </button>
+                    <button class="c-search-toggler" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="c-navbar">
+            <div class="container">
+                <!-- BEGIN: BRAND -->
+                <div class="c-navbar-wrapper clearfix">
+                    <!-- END: BRAND -->
+                    <!-- BEGIN: QUICK SEARCH -->
+                    <form class="c-quick-search" action="#">
+                        <input type="text" name="query" placeholder="{% trans 'Type to search...' %}" value=""
+                               class="form-control"
+                               autocomplete="off">
+                        <span class="c-theme-link">&times;</span>
+                    </form>
+                    <!-- END: QUICK SEARCH -->
+                    <!-- BEGIN: HOR NAV -->
+                    <!-- BEGIN: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- BEGIN: MEGA MENU -->
+                    <nav class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold">
+                        <!-- BEGIN: MEGA MENU -->
+                        <ul class="nav navbar-nav c-theme-nav">
+                            <li class="c-active c-menu-type-classic">
+                                <a href="{% url 'home' %}" class="c-link dropdown-toggle">{% trans 'Home' %}</a>
+                            </li>
+                            <li class="c-menu-type-classic">
+                                <a href="" class="c-link dropdown-toggle">{% trans 'Portal' %}</a>
+                            </li>
+                            <li class="c-menu-type-classic">
+                                <a href="" class="c-link dropdown-toggle">{% trans 'Advance Search' %}</a>
+                            </li>
+
+                            <li class="c-search-toggler-wrapper">
+                                <a href="#" class="c-btn-icon c-search-toggler"><i class="fa fa-search"></i></a>
+                            </li>
+                        </ul>
+                        <!-- END MEGA MENU -->
+                    </nav>
+                    <!-- END: MEGA MENU -->
+                    <!-- END: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- END: HOR NAV -->
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+<!-- END: HEADER 2 -->
+<!-- END: LAYOUT/HEADERS/HEADER-2 -->
+<!-- BEGIN: CONTENT/USER/FORGET-PASSWORD-FORM -->
+<div class="modal fade c-content-login-form" id="forget-password-form" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content c-square">
+            <div class="modal-header c-no-border">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="c-font-24 c-font-sbold">Password Recovery</h3>
+                <p>
+                    To recover your password please fill in your email address
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="forget-email" class="hide">Email</label>
+                        <input type="email" class="form-control input-lg c-square" id="forget-email"
+                               placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit"
+                                class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">
+                            Submit
+                        </button>
+                        <a href="javascript:;" class="c-btn-forgot" data-toggle="modal" data-target="#login-form"
+                           data-dismiss="modal">Back To Login</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer c-no-border">
+                <span class="c-text-account">Don't Have An Account Yet ?</span>
+                <a href="javascript:;" data-toggle="modal" data-target="#signup-form" data-dismiss="modal"
+                   class="btn c-btn-dark-1 btn c-btn-uppercase c-btn-bold c-btn-slim c-btn-border-2x c-btn-square c-btn-signup">Signup!</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: CONTENT/USER/FORGET-PASSWORD-FORM -->
+<!-- BEGIN: CONTENT/USER/SIGNUP-FORM -->
+<div class="modal fade c-content-login-form" id="signup-form" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content c-square">
+            <div class="modal-header c-no-border">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="c-font-24 c-font-sbold">Create An Account</h3>
+                <p>
+                    Please fill in below form to create an account with us
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="signup-email" class="hide">Email</label>
+                        <input type="email" class="form-control input-lg c-square" id="signup-email"
+                               placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-username" class="hide">Username</label>
+                        <input type="email" class="form-control input-lg c-square" id="signup-username"
+                               placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-fullname" class="hide">Fullname</label>
+                        <input type="email" class="form-control input-lg c-square" id="signup-fullname"
+                               placeholder="Fullname">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-country" class="hide">Country</label>
+                        <select class="form-control input-lg c-square" id="signup-country">
+                            <option value="1">Country</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit"
+                                class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">
+                            Signup
+                        </button>
+                        <a href="javascript:;" class="c-btn-forgot" data-toggle="modal" data-target="#login-form"
+                           data-dismiss="modal">Back To Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: CONTENT/USER/SIGNUP-FORM -->
+<!-- BEGIN: CONTENT/USER/LOGIN-FORM -->
+<div class="modal fade c-content-login-form" id="login-form" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content c-square">
+            <div class="modal-header c-no-border">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="c-font-24 c-font-sbold">Good Afternoon!</h3>
+                <p>
+                    Let's make today a great day!
+                </p>
+                <form>
+                    <div class="form-group">
+                        <label for="login-email" class="hide">Email</label>
+                        <input type="email" class="form-control input-lg c-square" id="login-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" class="hide">Password</label>
+                        <input type="password" class="form-control input-lg c-square" id="login-password"
+                               placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <div class="c-checkbox">
+                            <input type="checkbox" id="login-rememberme" class="c-check">
+                            <label for="login-rememberme" class="c-font-thin c-font-17">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Remember Me </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit"
+                                class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">Login
+                        </button>
+                        <a href="javascript:;" data-toggle="modal" data-target="#forget-password-form"
+                           data-dismiss="modal" class="c-btn-forgot">Forgot Your Password ?</a>
+                    </div>
+                    <div class="clearfix">
+                        <div class="c-content-divider c-divider-sm c-icon-bg c-bg-grey c-margin-b-20">
+                            <span style="width: 110px">or signup with</span>
+                        </div>
+                        <ul class="c-content-list-adjusted">
+                            <li>
+                                <a class="btn btn-block c-btn-square btn-social btn-twitter">
+                                    <i class="fa fa-twitter"></i>
+                                    Twitter </a>
+                            </li>
+                            <li>
+                                <a class="btn btn-block c-btn-square btn-social btn-facebook">
+                                    <i class="fa fa-facebook"></i>
+                                    Facebook </a>
+                            </li>
+                            <li>
+                                <a class="btn btn-block c-btn-square btn-social btn-google">
+                                    <i class="fa fa-google"></i>
+                                    Google </a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer c-no-border">
+                <span class="c-text-account">Don't Have An Account Yet ?</span>
+                <a href="javascript:;" data-toggle="modal" data-target="#signup-form" data-dismiss="modal"
+                   class="btn c-btn-dark-1 btn c-btn-uppercase c-btn-bold c-btn-slim c-btn-border-2x c-btn-square c-btn-signup">Signup!</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END: CONTENT/USER/LOGIN-FORM -->
+<!-- BEGIN: LAYOUT/SIDEBARS/QUICK-SIDEBAR -->
+<nav class="c-layout-quick-sidebar">
+    <div class="c-header">
+        <button type="button" class="c-link c-close">
+            <i class="icon-login"></i>
+        </button>
+    </div>
+    <div class="c-content">
+        <div class="c-section">
+            <h3>Header Type</h3>
+            <div class="c-settings">
+                <input type="button"
+                       class="c-setting_header-type btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
+                       data-value="boxed" value="boxed"/>
+                <input type="button"
+                       class="c-setting_header-type btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
+                       data-value="fluid" value="fluid"/>
+            </div>
+        </div>
+        <div class="c-section">
+            <h3>Header Mode</h3>
+            <div class="c-settings">
+                <input type="button"
+                       class="c-setting_header-mode btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
+                       data-value="fixed" value="fixed"/>
+                <input type="button"
+                       class="c-setting_header-mode btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
+                       data-value="static" value="static"/>
+            </div>
+        </div>
+        <div class="c-section">
+            <h3>Mega Menu Style</h3>
+            <div class="c-settings">
+                <input type="button"
+                       class="c-setting_megamenu-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
+                       data-value="dark" value="dark"/>
+                <input type="button"
+                       class="c-setting_megamenu-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
+                       data-value="light" value="light"/>
+            </div>
+        </div>
+        <div class="c-section">
+            <h3>Font Style</h3>
+            <div class="c-settings">
+                <input type="button"
+                       class="c-setting_font-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
+                       data-value="default" value="default"/>
+                <input type="button"
+                       class="c-setting_font-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
+                       data-value="light" value="light"/>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- END: LAYOUT/SIDEBARS/QUICK-SIDEBAR -->
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+    <!-- BEGIN: LAYOUT/SLIDERS/REVO-SLIDER-9 -->
+    {% block main_section %}
+        <section class="c-layout-revo-slider c-layout-revo-slider-2">
+            <div class="tp-banner-container tp-fullscreen tp-fullscreen-mobile">
+                <div class="tp-banner">
+                    <ul>
+                        <!--BEGIN: SLIDE #1 -->
+                        <li data-transition="fade" data-slotamount="1" data-masterspeed="1000">
+                            <img alt="" src="{% static 'images/Foto_background.jpg' %}"
+                                 data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <!--BEGIN: MAIN TITLE -->
+                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
+                                 data-hoffset="-180" data-voffset="-130" data-speed="500" data-start="1000"
+                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
+                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
+                                <h3 class="c-font-44 c-font-bold c-font-uppercase c-font-white">
+                                    Incredibly robust for any concept </h3>
+                            </div>
+                            <!--END -->
+                            <!--BEGIN: SUB TITLE -->
+                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
+                                 data-hoffset="-270" data-voffset="-20" data-speed="500" data-start="1500"
+                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
+                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
+                                <p class="c-font-24 c-font-white">
+                                    Lorem ipsum dolor sit amet, consectetuer et nibh euismod<br>
+                                    Dolor sit amet, consectetuer et nibh euismod<br>
+                                    elit sed diam nonummy et nibh euismod<br>
+                                </p>
+                            </div>
+                            <!--END -->
+                            <!--BEGIN: ACTION BUTTON -->
+                            <div class="caption randomrotateout tp-resizeme" data-x="center" data-y="center"
+                                 data-hoffset="-460" data-voffset="100" data-speed="500" data-start="2000"
+                                 data-easing="Back.easeOut">
+                                <a href="#"
+                                   class="btn btn-xlg c-btn-square c-btn-bold c-btn-border-2x c-btn-white c-btn-uppercase">Explore</a>
+                            </div>
+                            <!--END -->
+                        </li>
+                        <!--END -->
+                        <!--BEGIN: SLIDE #2 -->
+                        <li data-transition="fade" data-slotamount="1" data-masterspeed="1000">
+                            <img alt="" src="{% static 'images/Foto_background.jpg' %}"
+                                 data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
+                            <!--BEGIN: MAIN TITLE -->
+                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
+                                 data-voffset="-100" data-speed="500" data-start="1000"
+                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
+                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
+                                <h3 class="c-font-50 c-font-bold c-font-uppercase c-font-white">
+                                    Ultimate Multipurpose theme </h3>
+                            </div>
+                            <!--END -->
+                            <!--BEGIN: SUB TITLE -->
+                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
+                                 data-voffset="10" data-speed="500" data-start="1500"
+                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
+                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
+                                <p class="c-font-24 c-font-white c-center">
+                                    Lorem ipsum dolor sit amet, consectetuer et nibh euismod<br>
+                                    Dolor sit amet, consectetuer et nibh euismod<br>
+                                    elit sed diam nonummy et nibh euismod<br>
+                                </p>
+                            </div>
+                            <!--END -->
+                            <!--BEGIN: ACTION BUTTON -->
+                            <div class="caption randomrotateout tp-resizeme" data-x="center" data-y="center"
+                                 data-voffset="120" data-speed="500" data-start="2000" data-easing="Back.easeOut">
+                                <a href="#"
+                                   class="btn btn-xlg c-btn-square c-btn-bold c-btn-border-2x c-theme-btn c-btn-uppercase">Explore</a>
+                            </div>
+                            <!--END -->
+                        </li>
+                        <!--END -->
+                        <!--BEGIN: SLIDE #3 -->
+                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="6000"
+                            data-thumb="">
+                            <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
+                            <img src="{% static 'images/Foto_background.jpg' %}" alt="">
+{#                            <div class="caption fulllscreenvideo tp-videolayer" data-x="0" data-y="0" data-speed="600"#}
+{#                                 data-start="1000" data-easing="Power4.easeOut" data-endspeed="500"#}
+{#                                 data-endeasing="Power4.easeOut" data-autoplay="true" data-autoplayonlyfirsttime="false"#}
+{#                                 data-nextslideatend="true" data-videowidth="100%" data-videoheight="100%"#}
+{#                                 data-videopreload="meta" data-videomp4="assets/base/media/video/video-2.mp4"#}
+{#                                 data-videowebm="" data-videocontrols="none" data-forcecover="1" data-forcerewind="on"#}
+{#                                 data-aspectratio="16:9" data-volume="mute"#}
+{#                                 data-videoposter="assets/base/img/layout/sliders/revo-slider/base/blank.png">#}
+{#                            </div>#}
+                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
+                                 data-hoffset="" data-voffset="-30" data-speed="500" data-start="1000"
+                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
+                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
+                                <h3 class="c-font-55 c-font-bold c-font-center c-font-uppercase c-font-white c-block">
+                                    Design that speaks<br>
+                                    to modern trends </h3>
+                            </div>
+                            <div class="caption lft tp-resizeme" data-x="center" data-y="center" data-voffset="130"
+                                 data-speed="900" data-start="2000" data-easing="easeOutExpo">
+                                <a href="#"
+                                   class="btn-xlg btn c-btn-square c-btn-border-2x c-btn-white c-btn-bold c-btn-uppercase">Purchase</a>
+                            </div>
+                        </li>
+                        <!--END -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- END: LAYOUT/SLIDERS/REVO-SLIDER-9 -->
+        <!-- BEGIN: CONTENT/BARS/BAR-3 -->
+        <div class="c-content-box c-size-md c-bg-dark">
+            <div class="container">
+                <div class="c-content-bar-3">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="c-content-title-1">
+                                <h3 class="c-font-uppercase c-font-bold">DEDICATED SUPPORT</h3>
+                                <p class="c-font-uppercase">
+                                    JANGO comes with top-of-the-line support teams to ensure that we provide the best
+                                    experience for our customers
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-offset-2">
+                            <div class="c-content-v-center" style="height: 90px;">
+                                <div class="c-wrapper">
+                                    <div class="c-body">
+                                        <button type="button"
+                                                class="btn btn-md c-btn-square c-btn-border-2x c-theme-btn c-btn-uppercase c-btn-bold">
+                                            Get Support
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <!-- END: CONTENT/BARS/BAR-3 -->
+    <!-- BEGIN: CONTENT/PRODUCTS/PRODUCT-1 -->
+
+</div>
+<!-- END: PAGE CONTAINER -->
+<!-- BEGIN: LAYOUT/FOOTERS/FOOTER-5 -->
+<a name="footer"></a>
+{% block footer %}
+    <footer class="c-layout-footer c-layout-footer-3 c-bg-dark">
+        <div class="c-prefooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="c-container c-first">
+                            <div class="c-content-title-1">
+                                <h3 class="c-font-uppercase c-font-bold c-font-white">JAN<span
+                                        class="c-theme-font">GO</span></h3>
+                                <div class="c-line-left hide">
+                                </div>
+                                <p class="c-text">
+                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, s ed elit diam nonummy ad
+                                    minim veniam quis nostrud exerci et tation diam.
+                                </p>
+                            </div>
+                            <ul class="c-links">
+                                <li>
+                                    <a href="#">{% trans 'Home' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#">{% trans 'Advice for clients' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#">{% trans 'Advice for travelers' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#">{% trans 'Contact' %}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="c-container">
+                            <div class="c-content-title-1">
+                                <h3 class="c-font-uppercase c-font-bold c-font-white">Latest Posts</h3>
+                                <div class="c-line-left hide">
+                                </div>
+                            </div>
+                            <div class="c-blog">
+                                <div class="c-post">
+                                    <div class="c-post-img">
+                                        <img src="assets/base/img/content/stock/9.jpg" alt="" class="img-responsive"/>
+                                    </div>
+                                    <div class="c-post-content">
+                                        <h4 class="c-post-title"><a href="#">Ready to Launch</a></h4>
+                                        <p class="c-text">
+                                            Lorem ipsum dolor sit amet ipsum sit, consectetuer adipiscing elit sit amet
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="c-post c-last">
+                                    <div class="c-post-img">
+                                        <img src="assets/base/img/content/stock/14.jpg" alt="" class="img-responsive"/>
+                                    </div>
+                                    <div class="c-post-content">
+                                        <h4 class="c-post-title"><a href="#">Dedicated Support</a></h4>
+                                        <p class="c-text">
+                                            Lorem ipsum dolor ipsum sit ipsum amet, consectetuer sit adipiscing elit
+                                            ipsum
+                                            elit elit ipsum elit
+                                        </p>
+                                    </div>
+                                </div>
+                                <a href="#"
+                                   class="btn btn-md c-btn-border-1x c-theme-btn c-btn-uppercase c-btn-square c-btn-bold c-read-more hide">Read
+                                    More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="c-container c-last">
+                            <div class="c-content-title-1">
+                                <h3 class="c-font-uppercase c-font-bold c-font-white">Find us</h3>
+                                <div class="c-line-left hide">
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed elit diam nonummy ad
+                                    minim.
+                                </p>
+                            </div>
+                            <ul class="c-socials">
+                                <li>
+                                    <a href="#"><i class="icon-social-facebook"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="icon-social-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="icon-social-youtube"></i></a>
+                                </li>
+                            </ul>
+                            <ul class="c-address">
+                                <li>
+                                    <i class="icon-pointer c-theme-font"></i> One Boulevard, Beverly Hills
+                                </li>
+                                <li>
+                                    <i class="icon-call-end c-theme-font"></i> +1800 1234 5678
+                                </li>
+                                <li>
+                                    <i class="icon-envelope c-theme-font"></i> email@example.com
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-postfooter">
+            <div class="container">
+                <p class="c-font-oswald c-font-14 c-center">
+                    Develop by T.O.W. PEB
+                </p>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+<!-- END: LAYOUT/FOOTERS/FOOTER-5 -->
+<!-- BEGIN: LAYOUT/FOOTERS/GO2TOP -->
+<div class="c-layout-go2top">
+    <i class="icon-arrow-up"></i>
+</div>
+<!-- END: LAYOUT/FOOTERS/GO2TOP -->
+<!-- BEGIN: LAYOUT/BASE/BOTTOM -->
+<!-- BEGIN: CORE PLUGINS -->
+{% block scripts %}
+    <!--[if lt IE 9]>
+	<script src="../assets/global/plugins/excanvas.min.js"></script> 
+	<![endif]-->
+    <script src="{% static 'plugins/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/jquery-migrate.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
+    <!-- END: CORE PLUGINS -->
+    <!-- BEGIN: LAYOUT PLUGINS -->
+    <script src="{% static 'plugins/revo-slider/js/jquery.themepunch.tools.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/revo-slider/js/jquery.themepunch.revolution.min.js' %}"
+            type="text/javascript"></script>
+    <script src="{% static 'plugins/cubeportfolio/js/jquery.cubeportfolio.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/owl-carousel/owl.carousel.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/counterup/jquery.waypoints.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/counterup/jquery.counterup.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'plugins/fancybox/jquery.fancybox.pack.js' %}" type="text/javascript"></script>
+    <!-- END: LAYOUT PLUGINS -->
+    <!-- BEGIN: THEME SCRIPTS -->
+    <script src="{% static 'base/js/components.js' %}" type="text/javascript"></script>
+    <script src="{% static 'base/js/app.js' %}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            App.init(); // init core
+
+            // init main slider
+            var slider = $('.c-layout-revo-slider .tp-banner');
+            var cont = $('.c-layout-revo-slider .tp-banner-container');
+            var api = slider.show().revolution({
+                delay: 15000,
+                startwidth: 1170,
+                startheight: 900,
+                navigationType: "hide",
+                navigationArrows: "solo",
+                touchenabled: "on",
+                onHoverStop: "on",
+                keyboardNavigation: "off",
+                navigationType: "bullet",
+                navigationArrows: "",
+                navigationStyle: "round c-tparrows-hide c-theme",
+                navigationHAlign: "right",
+                navigationVAlign: "bottom",
+                navigationHOffset: 60,
+                navigationVOffset: 60,
+                spinner: "spinner2",
+                fullScreen: 'on',
+                fullScreenAlignForce: 'on',
+                fullScreenOffsetContainer: '.c-layout-header',
+                shadow: 0,
+                fullWidth: "off",
+                forceFullWidth: "off",
+                hideTimerBar: "on",
+                hideThumbsOnMobile: "on",
+                hideNavDelayOnMobile: 1500,
+                hideBulletsOnMobile: "on",
+                hideArrowsOnMobile: "on",
+                hideThumbsUnderResolution: 0
+            });
+        });
+    </script>
+{% endblock %}
+<!-- END: THEME SCRIPTS -->
+<!-- END: LAYOUT/BASE/BOTTOM -->
+</body>
+</html>

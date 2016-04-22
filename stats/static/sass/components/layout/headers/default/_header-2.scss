@@ -1,0 +1,48 @@
+// Header 
+$layout_full_page:                                                              'no';  // yes or no
+$header_class:																	'2';
+$header_desktop-bg-color:														rgba(#1e242a, 0.25);
+$header_desktop-navbar-bg:														none;
+$header_desktop_border:															0;
+$header_min_desktop_border:														0;
+$header_min_desktop_shadow:														none;
+
+// Top Menu
+$top-menu_bg-color:																none;
+$top-menu_desktop-border:														1px solid rgba(#fff, 0.15);
+$top-menu_font-color: 															#fff;
+$top-menu_font-color-on-hover: 													darken($top-menu_font-color, 10%);
+
+$top-menu_icon-font-color:														darken(#ffffff, 15%);
+$top-menu_icon-font-color-on-hover:												#ffffff;
+$top-menu_icon-bg-color:														darken($header_desktop-bg-color, 10%);
+$top-menu_icon-bg-color-on-hover:												darken($header_desktop-bg-color, 1%);
+
+$top-menu_language-bar-bg-color:												lighten($header_desktop-bg-color, 5%);
+$top-menu_language-bar-bg-color-on-hover:										lighten($header_desktop-bg-color, 10%);
+$top-menu_language-bar-font-color:                                             	darken(#ffffff, 5%);
+$top-menu_language-bar-font-color-on-hover:                                    	#ffffff;
+
+$top-menu_language-menu-bg-color: 												#f6f8fa;
+$top-menu_language-menu-link-font-color:										darken($top-menu_language-menu-bg-color, 35%);
+$top-menu_language-menu-link-font-color-on-hover:								darken($top-menu_language-menu-bg-color, 40%); 
+$top-menu_language-menu-link-bg-color-on-hover:									darken($top-menu_language-menu-bg-color, 4%);   
+
+// Top Menu Quick Search
+$top-menu_quick-search-bg-color:												lighten($header_desktop-bg-color, 5%);
+$top-menu_quick-search-font-color:                                             	darken(#ffffff, 10%);
+$top-menu_quick-search-placeholder-color:                                       darken(#ffffff, 15%);
+
+// Brand
+$brand-link-font-color:  														#ebedf2;
+$brand-link-font-color-on-hover:  												#ff6b57;
+
+// Mega Menu
+$mega-menu_desktop_primary-link-font-color:										#ffffff; 
+$mega-menu_desktop_primary-link-font-color-on-hover:							#ffffff;
+$mega-menu_desktop_primary-link-font-color-on-active:							#ffffff;
+
+$mega-menu_desktop_min-header-bg-color:											rgba(#1e242a, 0.82);
+$mega-menu_desktop_min-header-primary-link-font-color:							#ffffff;  
+
+@import  'theme/_header';

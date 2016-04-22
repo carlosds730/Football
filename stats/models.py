@@ -15,8 +15,8 @@ def get_next_fixture():
     """
 
     next_fixture = Fixture.objects.aggregate(
-        models.Max('numero')
-    )['numero__max']
+        models.Max('number')
+    )['number__max']
 
     if next_fixture:
         return next_fixture + 1
@@ -94,17 +94,19 @@ class Fixture(models.Model):
     class Meta:
         verbose_name = "Jornada"
         verbose_name_plural = "Jornadas"
-        ordering = ['-numero']
+        ordering = ['-number']
 
     date = models.DateField(verbose_name="Fecha", help_text="Fecha de la jornada", unique=True,
                             default=get_next_fixture_date)
 
     image = ImageField(verbose_name="Foto", upload_to='Jornadas', help_text="Foto de la jornada", blank=True)
 
-    numero = models.PositiveSmallIntegerField(verbose_name="Jornada número", default=get_next_fixture)
+    number = models.PositiveSmallIntegerField(verbose_name="Jornada número", default=get_next_fixture)
+
+    season = models.ForeignKey('Season', related_name='fixtures', verbose_name='Temporada', null=True)
 
     def __str__(self):
-        return "Jornada " + str(self.numero)
+        return "Jornada " + str(self.number)
 
 
 class Stats(models.Model):
@@ -155,3 +157,17 @@ class Stats(models.Model):
         player.save()
         player.elo = player.calculate_elo()
         player.save()
+
+
+class Season(models.Model):
+    class Meta:
+        verbose_name = 'Temporada'
+        verbose_name_plural = 'Temporadas'
+        ordering = ['-number']
+
+    number = models.PositiveIntegerField(verbose_name='Numero')
+
+    name = models.CharField(verbose_name='Nombre', max_length=200)
+
+    def __str__(self):
+        return str(self.number)

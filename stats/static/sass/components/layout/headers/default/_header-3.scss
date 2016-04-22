@@ -1,0 +1,132 @@
+// Header 
+$layout_full_page:                                                              'no';  // yes or no
+$header_class:																	'3';
+$header_desktop-bg-color:														#2f353b;
+$header_desktop-navbar-bg:														none;
+$header_desktop_border:															0;
+$header_min_desktop_border:														0;
+$header_min_desktop_shadow:														none;
+
+// Top Menu
+$top-menu_bg-color:																#ffffff;
+$top-menu_desktop-border:														1px solid darken(#f7fafb, 3%);
+$top-menu_font-color: 															darken(#c4ccd7, 20%);  
+$top-menu_font-color-on-hover: 													darken($top-menu_font-color, 30%);
+
+$top-menu_icon-font-color:														darken(#c4ccd7, 15%); 
+$top-menu_icon-font-color-on-hover:												darken(#c4ccd7, 50%);
+$top-menu_icon-bg-color:														none;
+$top-menu_icon-bg-color-on-hover:												none;
+
+$top-menu_language-bar-bg-color:												darken(#f7fafb, 5%);
+$top-menu_language-bar-bg-color-on-hover:										darken(#f7fafb, 5%);
+$top-menu_language-bar-font-color:                                             	darken(#c4ccd7, 35%); 
+$top-menu_language-bar-font-color-on-hover:                                    	darken(#c4ccd7, 35%); 
+
+$top-menu_language-menu-bg-color: 												#f7f7f7;   
+$top-menu_language-menu-link-font-color:										#7d8691;
+$top-menu_language-menu-link-font-color-on-hover:								#7d8691; 
+$top-menu_language-menu-link-bg-color-on-hover:									darken($top-menu_language-menu-bg-color, 5%); 
+
+// Top Menu Quick Search
+$top-menu_quick-search-bg-color:												lighten($header_desktop-bg-color, 5%);
+$top-menu_quick-search-font-color:                                             	darken(#ffffff, 10%);
+$top-menu_quick-search-placeholder-color:                                       darken(#ffffff, 15%);
+
+// Brand
+$brand-link-font-color:  														#ebedf2;
+$brand-link-font-color-on-hover:  												#ff6b57;
+
+// Mega Menu
+$mega-menu_desktop_primary-link-font-color:										#ffffff; 
+$mega-menu_desktop_primary-link-font-color-on-hover:							#ffffff;
+$mega-menu_desktop_primary-link-font-color-on-active:							#ffffff;  
+
+$mega-menu_desktop_min-header-bg-color:											$header_desktop-bg-color;
+$mega-menu_desktop_min-header-primary-link-font-color:							#ffffff;  
+
+@import  'theme/_header';
+
+@media (min-width: $screen-md-min) { /* 992px */
+	.c-layout-header.c-layout-header-3 {
+
+		.c-topbar {
+			.c-top-menu {
+				> .c-icons {
+		    	
+			    	> li {
+			    		padding: 11px 5px 11px 5px; 
+
+			    		> a {
+			    			> i {
+			    				font-size: 16px;
+			    				padding: 1px 1px;
+			    			}
+			    		}
+			    	}
+				}
+
+				> .c-links {
+					> li > a {
+						font-weight: 500;
+					}
+				}
+			}
+		}
+
+	}
+
+	.c-layout-header.c-layout-header-3.c-layout-header-3-custom-menu {
+
+		.c-navbar {
+			.c-mega-menu {
+				> .nav.navbar-nav {
+					> li {   
+						&:focus,
+						&:active,
+						&:hover,
+						&.c-active {					
+							> a:not(.btn):not(.c-btn-icon):not(.c-quick-sidebar-toggler) {
+								position: relative;
+								color: $mega-menu_desktop_primary-link-font-color !important;
+
+								&:before {
+									transition: $header_transition;
+									
+									position: absolute;
+									top: 32px;
+									content: '';
+									width: 15px;
+									height: 2px;
+									display: block;
+									background: $mega-menu_desktop_primary-link-font-color-on-hover; 
+								
+									.c-page-on-scroll & {
+										top: 14px;
+										transition: $header_transition;
+									}
+								}
+
+								> i {
+									color: $mega-menu_desktop_primary-link-font-color !important;   
+								}
+							}
+
+							> a.c-btn-icon { 
+								color: $mega-menu_desktop_primary-link-font-color !important; 
+							}
+
+							> .c-search-toggler > i {
+								color: $mega-menu_desktop_primary-link-font-color !important;
+							}
+
+							> .c-quick-sidebar-toggler > .c-line {
+								background: $mega-menu_desktop_primary-link-font-color !important;
+							}
+						}	
+					}
+				}
+			}
+		}
+	}
+}

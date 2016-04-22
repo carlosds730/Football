@@ -1,0 +1,16 @@
+// MIXINS
+
+// Mega menu arrows for mobile mode
+@mixin mobile-menu-arrrow() {
+	position: relative;
+	float: right;
+	display: inline-block;
+	font-size: 13px;
+	font-family: FontAwesome;
+	height: auto;
+	margin-top: 2px;
+	margin-right: 2px;
+	content: "\f104";
+	font-weight: 300;
+}
+

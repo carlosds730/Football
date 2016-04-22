@@ -1,0 +1,421 @@
+// Header 
+$layout_full_page:                                                              'no';  // yes or no
+$header_class:																	'6';
+$header_desktop-bg-color:														#2f353b;
+$header_desktop-navbar-bg:														none;
+$header_desktop_border:															0;
+$header_min_desktop_border:														0;
+$header_min_desktop_shadow:														none;
+
+$header_zindex:			 														$zindex-navbar;
+$header_transition: 															0.2s;
+$header_height:                                                   				67px;  
+$topbar_height:																	44px;
+$header_on-scroll-height:                                         				67px; 
+
+// Top Menu
+$top-menu_bg-color:																#ffffff;
+$top-menu_desktop-border:														1px solid darken(#f7fafb, 3%);
+$top-menu_font-color: 															#aeb8c2;  
+$top-menu_font-color-on-hover: 													#aeb8c2;
+
+$top-menu_icon-font-color:														#c1ced7; 
+$top-menu_icon-font-color-on-hover:												#c1ced7; 
+$top-menu_icon-bg-color:														none;
+$top-menu_icon-bg-color-on-hover:												none;
+
+$top-menu_language-bar-bg-color:												darken(#f7fafb, 5%);    
+$top-menu_language-bar-bg-color-on-hover:										darken(#f7fafb, 5%);
+$top-menu_language-bar-font-color:                                             	darken(#c4ccd7, 35%); 
+$top-menu_language-bar-font-color-on-hover:                                    	darken(#c4ccd7, 35%); 
+
+$top-menu_language-menu-bg-color: 												#f7f7f7;   
+$top-menu_language-menu-link-font-color:										#7d8691;
+$top-menu_language-menu-link-font-color-on-hover:								#7d8691; 
+$top-menu_language-menu-link-bg-color-on-hover:									darken($top-menu_language-menu-bg-color, 5%); 
+
+// Brand
+$brand-link-font-color:  														#ebedf2;
+$brand-link-font-color-on-hover:  												#ff6b57;
+
+// Mega Menu
+$header_desktop_mega-menu-primary-link-padding: 								25px 25px 22px 25px; 
+$header_desktop_mega-menu-btn-margin: 											18px 25px 7px 25px; 
+$header_desktop_mega-menu-btn-icon-margin: 										8px 10px 0px 10px;   
+$header_desktop_mega-menu-quick-sidebar-toggler-padding:						28px 25px 15px 25px; 
+
+$header_desktop_min-header-mega-menu-primary-link-padding: 						23px 15px 21px 15px;
+$header_desktop_min-header_mega-menu-btn-margin: 								15px 15px 16px 15px; 
+$header_desktop_min-header_mega-menu-btn-icon-margin: 							6px 5px 7px 5px;
+$header_desktop_min-header_mega-menu-quick-sidebar-toggler-padding:				26px 0 24px 15px;
+
+
+$header_desktop_mega-menu-quick-search-close-icon-top:							35px;
+$header_desktop_mega-menu-quick-search-close-icon-right:						8px;
+$header_desktop_mega-menu-quick-search-form-control-padding:					20px 20px 20px 5px;
+
+$mega-menu_desktop_primary-link-font-color:										#ffffff; 
+$mega-menu_desktop_primary-link-font-color-on-hover:							#ffffff;
+$mega-menu_desktop_primary-link-font-color-on-active:							#ffffff;  
+
+$mega-menu_desktop_min-header-bg-color:											$header_desktop-bg-color;
+$mega-menu_desktop_min-header-primary-link-font-color:							#ffffff;  
+
+$quick-search_mobile_input-font-color:                                       	darken($general-head-font-color, 20%);
+$quick-search_mobile_input-placeholder-color:                        		 	darken($general-head-font-color, 25%);
+
+@import  'theme/_header';
+
+.c-layout-header.c-layout-header-6 {
+
+	.c-topbar {
+		padding: 24px 0;
+
+		.c-brand {
+			float: left;
+			margin: 0px;
+			padding: 9px 0 0 0;
+
+			.c-layout-quick-search-shown & {
+				display: block;
+			}
+
+			> .c-logo {
+				display: inline-block;					
+				position: relative;
+
+				&:after {
+					top: -2px;
+					position: absolute;
+					right: -22px;
+					content: "";
+					width: 1px;
+					background: #dfe4e8;
+					height: 32px;
+					display: inline-block;
+				}
+			}
+
+			> .c-icons {
+				float: right;
+				display: inline-block;
+				padding: 0;
+				margin: 0 0 0 40px;
+				list-style: none;
+
+				> li {
+					display: inline-block;
+			   		padding: 3px 3px 5px 3px; 
+
+		    		> a {
+		    			font-size: 16px;
+
+		    			> i {
+		    				color: $top-menu_icon-font-color;
+		    				font-size: 16px;
+		    				padding: 4px;
+		    			}
+		    		}
+		    	}
+			}
+		}
+
+		.c-top-menu {
+			float: right;
+
+			> .c-links {
+				> li {
+					padding-left: 7px;
+					padding-right: 7px;
+
+					> a:not(.btn) {
+						color: $top-menu_font-color;
+						font-weight: 500;
+					}
+
+					> .btn {
+						margin-top: -4px;  
+					}
+
+					&.c-divider {
+						width: 1px;
+						display: inline-block;
+
+						&:after {
+							top: -3px;
+							position: absolute;
+							right: 7px;
+							content: "";
+							width: 1px;
+							background: #dfe4e8;
+							height: 32px;
+							display: inline-block;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: $screen-md-min) { /* 992px */
+	.c-layout-header.c-layout-header-6 {
+		//	Topbar  
+		.c-navbar {
+			// Main markup
+			line-height: 0px;
+
+			.c-mega-menu {			
+				float: none;
+				display: block;
+				text-align: center;
+				line-height: 0px;
+
+				.c-layout-quick-search-shown & {
+					display: none;
+				}     
+
+				> .nav.navbar-nav {
+					line-height: 0px;
+					float: none;
+					display: inline-block;
+
+					> li {     
+						margin: 0 !important;
+						padding: 0 !important;
+						// link
+						> .c-link { 
+							padding: $header_desktop_mega-menu-primary-link-padding;    
+							min-height: $header_height;
+						}
+
+						&:first-child {
+							> .c-link {
+								padding-left: 5px;
+							}
+						}
+
+						// Quick sidebar toggler
+
+						> .c-quick-sidebar-toggler {
+							padding: $header_desktop_mega-menu-quick-sidebar-toggler-padding;
+						}
+
+						// button
+						> .c-btn {
+							margin: $header_desktop_mega-menu-btn-margin;
+						}
+
+						// icon
+						> .c-btn-icon {
+							margin: $header_desktop_mega-menu-btn-icon-margin;
+						}  
+
+						.c-menu-type-mega {
+							margin-top: -6px;
+						}
+					}
+				}	      	
+			}
+		}   
+
+		// Quick search
+		.c-quick-search {
+			> .form-control {
+				padding: $header_desktop_mega-menu-quick-search-form-control-padding;
+				height: $header_height;
+			}
+
+			> span {
+				top: $header_desktop_mega-menu-quick-search-close-icon-top;
+				right: $header_desktop_mega-menu-quick-search-close-icon-right;
+			}
+		}
+
+	}
+
+	.c-layout-header.c-layout-header-6.c-navbar-fluid {
+		.c-navbar {
+			width: 100%;
+			float: none;     
+			display: block;
+
+			.c-mega-menu {
+				float: none;
+				width: 100%;
+				display: block;
+
+				.c-layout-quick-search-shown & {
+					display: none;
+				}
+
+				> .nav.navbar-nav {
+					width: 100%;
+					display: inline-block;
+
+					> li {
+						> .c-quick-sidebar-toggler {
+							padding-right: 10px;
+						}
+
+						> .c-search-toggler {
+							padding-right: 5px;
+						}
+
+						&.c-search-toggler-wrapper,
+						&.c-quick-sidebar-toggler-wrapper {
+							float: right;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.c-layout-header-fixed.c-layout-header-6-topbar .c-layout-page {
+  		margin-top: 160px;
+  	}
+
+  	.c-page-on-scroll.c-layout-header-fixed .c-layout-header.c-layout-header-6 {
+  		height: $header_on-scroll-height;	
+  	}
+}
+
+// BEGIN: Mobile Mode
+
+@media (max-width: $screen-sm-max) { /* 991px */
+
+	.c-layout-header.c-layout-header-6 {
+
+		.c-topbar {
+			padding: 0;
+
+			.c-top-menu {
+				float: none;
+				display: block;
+				padding: 0;
+				margin: 10px 0;
+				@include clearfix();	
+				text-align: right;	
+
+				.c-links {
+					float: right;
+
+					> li {
+						&:last-child {
+							padding-right: 0;
+						}
+					}
+				}	
+			}
+
+			.c-brand {		
+				width: 100%;
+				display: block;				
+				float: none;
+				@include clearfix();
+				margin: 10px 0 20px 0;
+
+				.c-layout-quick-search-shown & {  
+					display: none;
+				}
+
+				> .c-logo {
+					float: left;
+				}
+
+				> .c-icons {
+					float: left;
+				}
+			 	
+			 	> .c-hor-nav-toggler {
+			 		float: right;
+			 		border: 1px solid $top-menu_font-color;
+			 		padding: 3px 5px;
+			 		position: relative;
+			 		top: 2px;
+
+			 		> .c-line {
+			 			background: $top-menu_font-color;
+			 		}
+
+			 		&:hover {
+			 			border-color: darken($top-menu_font-color, 20%);
+
+			 			> .c-line {
+				 			background:darken($top-menu_font-color, 20%);
+				 		}
+			 		}
+			 	}
+
+			 	> .c-search-toggler {
+			 		float: right;
+			 		position: relative;
+			 		top: 5px;
+
+			 		> i {
+			 			color: $top-menu_font-color;
+			 		}
+
+			 		&:hover {
+			 			> i {
+			 				color: darken($top-menu_font-color, 20%);
+			 			}
+			 		}
+			 	}
+			}
+		}
+
+		.c-navbar {
+
+			.c-mega-menu {
+
+				.c-layout-quick-search-shown & {  
+					display: none;   
+				}
+
+				margin-bottom: 0px;
+			}
+		}
+
+		// Quick search
+
+		.c-quick-search {
+			margin-top: 0;
+
+			> .form-control {
+				background: none;    
+				@include placeholder($quick-search_mobile_input-placeholder-color);  
+				color: $quick-search_mobile_input-font-color;
+				padding: 23px 10px 38px 10px;
+				height: 57px;
+			}
+
+			// close icon
+			> span {
+				top: 0px;
+				color: $quick-search_mobile_input-font-color; 
+			}
+		}
+	}
+}
+// END
+
+@media (max-width: $screen-xs-min) { /* 991px */
+
+	.c-layout-header.c-layout-header-6 {
+
+		.c-topbar {
+
+			.c-brand {		
+			 	> .c-hor-nav-toggler {
+			 		top: -2px;
+			 	}
+
+			 	> .c-search-toggler {
+			 		top: 2px;
+			 	}
+			}
+		}
+	}
+}

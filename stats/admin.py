@@ -22,8 +22,13 @@ class PlayersAdmin(AdminImageMixin, admin.ModelAdmin):
 class FixtureAdmin(AdminImageMixin, admin.ModelAdmin):
     model = models.Fixture
     inlines = [StatsInline]
-    list_display = ['numero', 'date']
+    list_display = ['number', 'date', 'season']
+
+
+class SeasonAdmin(admin.ModelAdmin):
+    list_display = ['number', 'name']
 
 
 admin.site.register(models.Fixture, FixtureAdmin)
 admin.site.register(models.Player, PlayersAdmin)
+admin.site.register(models.Season, SeasonAdmin)

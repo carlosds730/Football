@@ -21,7 +21,7 @@ from stats import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.home)
+    url(r'^$', views.home, name='home')
 ]
 
 if settings.DEBUG:

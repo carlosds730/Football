@@ -1,0 +1,112 @@
+// Header 
+$layout_full_page:                                                              'no';  // yes or no
+$header_class:																	'4';
+$header_desktop-bg-color:														none;
+$header_desktop-navbar-bg:														none;
+$header_desktop_border:															0;
+$header_min_desktop_border:														1px solid darken(#f7fafb, 5%);
+$header_min_desktop_shadow:														none; //0px 3px 9px -5px rgba(0,0,0,0.15);
+
+// Top Menu
+$top-menu_bg-color:																none;
+$top-menu_desktop-border:														1px solid darken(#f7fafb, 3%);
+$top-menu_font-color: 															darken(#c4ccd7, 20%);  
+$top-menu_font-color-on-hover: 													darken($top-menu_font-color, 30%);
+
+$top-menu_icon-font-color:														darken(#c4ccd7, 15%); 
+$top-menu_icon-font-color-on-hover:												darken(#c4ccd7, 50%);
+$top-menu_icon-bg-color:														none;
+$top-menu_icon-bg-color-on-hover:												none;
+
+$top-menu_language-bar-bg-color:												#f7fafb;
+$top-menu_language-bar-bg-color-on-hover:										darken(#c4ccd7, 5%);
+$top-menu_language-bar-font-color:                                             	#ffffff;
+$top-menu_language-bar-font-color-on-hover:                                    	#ffffff;
+
+$top-menu_language-menu-bg-color: 												#f7f7f7;   
+$top-menu_language-menu-link-font-color:										#7d8691;
+$top-menu_language-menu-link-font-color-on-hover:								#7d8691; 
+$top-menu_language-menu-link-bg-color-on-hover:									darken($top-menu_language-menu-bg-color, 5%);   
+
+// Top Menu Quick Search
+$top-menu_quick-search-bg-color:												rgba(#c4ccd7, 0.5);
+$top-menu_quick-search-font-color:                                             	#c4ccd7;
+$top-menu_quick-search-placeholder-color:                                       #c4ccd7;
+
+// Brand
+$brand-link-font-color:  														#ebedf2;
+$brand-link-font-color-on-hover:  												#ff6b57;
+
+// Quick Search
+$quick-search_desktop_input-font-color:  										#69727c;     
+$quick-search_desktop_input-placeholder-color:									lighten($quick-search_desktop_input-font-color, 10%);	
+$quick-search_desktop_icon-font-color:											lighten($quick-search_desktop_input-font-color, 10%);
+
+// Mega Menu
+$mega-menu_desktop_primary-link-font-color:										#69727c; 
+$mega-menu_desktop_primary-link-font-color-on-hover:							#69727c;
+$mega-menu_desktop_primary-link-font-color-on-active:							#69727c;
+
+$mega-menu_desktop_min-header-bg-color:											#ffffff;
+$mega-menu_desktop_min-header-primary-link-font-color:							#69727c;  
+
+@import  'theme/_header';
+
+@media (min-width: $screen-md-min) { /* 992px */
+	.c-layout-header.c-layout-header-4 {
+
+		.c-topbar {
+			margin-top: -1px;
+			.c-top-menu {
+				> .c-icons {
+		    	
+			    	> li {
+			    		padding: 11px 3px 11px 3px; 
+
+			    		> a {
+			    			> i {
+			    				font-size: 16px;
+			    				padding: 1px 1px;
+			    			}
+			    		}
+			    	}
+				}
+
+				> .c-links {
+					> li > a {
+						font-weight: 500;
+					}
+				}
+
+				> .c-ext > li {
+					&.c-lang {
+
+						> a {
+							padding: 7px 7px 9px 7px;
+							color: darken($top-menu_icon-font-color, 15%);	
+							background: $top-menu_language-menu-bg-color;
+						}
+
+						&:hover {							
+							> a {
+								background: $top-menu_language-menu-bg-color;
+								color: darken($top-menu_icon-font-color, 15%) !important;
+							}
+						}
+
+						> .dropdown-menu {
+
+							> li > a {
+								font-weight: 500;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		&.c-bordered { 
+			border-bottom: 1px solid rgba(#000000, 0.05);   
+		}     
+	}
+}  

@@ -1,0 +1,272 @@
+// BEGIN: Mega Menu	
+
+$mega-menu_mobile_primary-link-font-size:            							15px;
+$mega-menu_mobile_primary-link-font-uppercase-size:    							13px;
+
+$mega-menu_mobile_inner-dropdown-menu-head-font-size:         					15px;
+$mega-menu_mobile_inner-dropdown-menu-head-font-uppercase-size:         		13px; 
+$mega-menu_mobile_inner-dropdown-menu-link-font-size:							14px;
+$mega-menu_mobile_inner-dropdown-menu-link-uppercase-font-size:					13px;
+
+$mega-menu_mobile_1st-level-link-padding:										10px 20px 10px 20px;
+$mega-menu_mobile_2nd-level-link-padding:										10px 20px 10px 40px;
+$mega-menu_mobile_3rd-level-link-padding:										10px 20px 10px 60px;
+$mega-menu_mobile_4th-level-link-padding:										10px 20px 10px 80px;
+$mega-menu_mobile_5th-level-link-padding:										10px 20px 10px 100px;
+
+$header_mobile_mega-menu-btn-margin: 											30px 15px 33px 15px; 
+$header_mobile_mega-menu-quick-sidebar-toggler-padding:							44px 0 41px 15px;
+
+// BEGIN: Mobile Mode
+
+@media (max-width: $screen-sm-max) { /* 991px */
+	.c-layout-header {
+
+		//	Navbar
+		.c-navbar {
+
+			// Main markup
+			.c-mega-menu {
+				@include inline-block();   
+				@include reset-padmar();
+				padding: 0 10px;
+				margin-bottom: 20px;
+				display: none;
+				width: 100%;
+				float: none !important;
+				overflow-x: hidden;  
+
+				&.c-shown {
+					display: block;
+					position: static;
+				}
+
+				> .nav.navbar-nav { 
+					margin: 0 -15px !important;
+					float: none;
+
+					> li {
+						display: block;  
+						float: none; 
+
+						// general link
+					    > .c-link {			    	
+					    	padding: $mega-menu_mobile_1st-level-link-padding;
+							font-size: $mega-menu_mobile_primary-link-font-size;
+							letter-spacing: 1px;     
+
+							&:focus,
+							&:hover { 
+								background: none;
+							}
+					    }
+
+						// button
+						> .c-btn {
+							margin: $header_mobile_mega-menu-btn-margin;
+						}
+
+						// quick search toggler
+						> .c-search-toggler {
+							display: none;
+						}
+
+						// quick sidebar toggler
+						> .c-quick-sidebar-toggler {
+							padding: $mega-menu_mobile_1st-level-link-padding;
+							background: 0;
+							border: 0;
+							outline: none;
+							padding-right: 0;
+
+							> .c-line { 
+								width: 15px;
+								display: block;
+								height: 2px;
+								padding: 0px;
+								margin: 3px 0;  
+
+								&:first-child {
+									margin-top: 3px;
+								}
+							}
+						}
+
+						// dropdown menu open state
+					    &.c-open {
+							> .dropdown-menu {
+								display: block;		
+
+								.dropdown-submenu.c-open {		
+									> .dropdown-menu {
+										display: block;		
+									}
+								}				
+							}
+						}
+
+						.dropdown-submenu > a:after,	
+						a.dropdown-toggle:after {
+					     	@include mobile-menu-arrrow(); 
+					    }
+
+						// link arrows
+						&.c-open.dropdown-submenu > a:after,
+					    &.c-open > a.dropdown-toggle:after,
+						.c-open.dropdown-submenu > a:after,
+					    .c-open > a.dropdown-toggle:after {
+					    	margin-right: 0px;
+					    	content: "\f107";
+					    }  
+
+						// general dropdown menu
+						.dropdown-menu {		
+							padding-bottom: 0;			
+							float: none;  
+							display: none;
+							position: static;
+							background: none;
+							box-shadow: none;
+							min-width: none;
+
+							> li {
+								> h3 {
+									margin: 0;
+									font-size: $mega-menu_mobile_inner-dropdown-menu-head-font-size; 
+								} 
+									
+								> a {
+									font-size: $mega-menu_mobile_inner-dropdown-menu-link-font-size;
+									white-space: normal; 
+								}
+							}
+						}
+
+						// classic dropdown menu
+						> .dropdown-menu.c-menu-type-classic {
+							padding: 0;
+
+							> li > a,					
+							> .dropdown-submenu > a {
+								padding: $mega-menu_mobile_2nd-level-link-padding;
+							}
+
+							> .dropdown-submenu > .dropdown-menu > li > a {
+								padding: $mega-menu_mobile_3rd-level-link-padding;
+							}
+
+							> .dropdown-submenu > .dropdown-menu > li > .dropdown-menu > li > a {
+								padding: $mega-menu_mobile_4th-level-link-padding;
+							}
+
+							> .dropdown-submenu > .dropdown-menu > li > .dropdown-menu > li > .dropdown-menu > li > a {
+								padding: $mega-menu_mobile_5th-level-link-padding;
+							}
+						}
+						
+						// mega dropdown menu
+						> .dropdown-menu.c-menu-type-mega {
+							padding-top: 0;
+							min-width: 0 !important;
+
+							// mega menu general dropdown menu
+							.dropdown-menu {
+								display: block;
+
+								&.c-menu-type-inline {
+									margin-left: 0;
+
+									> li > h3,
+									> li > a {
+										padding: $mega-menu_mobile_2nd-level-link-padding;
+									}
+								}
+							}
+
+							// mega menu sub dropdown menu
+							> .dropdown-submenu {
+
+								> a {
+									padding: $mega-menu_mobile_2nd-level-link-padding;
+								}
+
+								> .dropdown-menu {
+									display: none;
+
+									.dropdown-menu > li > h3,
+									.dropdown-menu > li > a {
+										padding: $mega-menu_mobile_3rd-level-link-padding; 
+									}
+								}
+
+								&.c-open {
+									> .dropdown-menu {
+										display: block;
+									}
+								}
+							}
+						}				
+					}
+
+					// visible on mobile mode
+
+					.c-visible-desktop {
+						display: none !important;
+					}
+				}
+			}
+
+			// Font options		
+			.c-mega-menu {
+
+				// Uppercase font
+				&.c-fonts-uppercase > .nav.navbar-nav > li {
+					// general link
+					> .c-link {
+						font-size: $mega-menu_mobile_primary-link-font-uppercase-size;
+						text-transform: uppercase; 
+					}
+
+					// general dropdown menu
+					.dropdown-menu {
+						> li {
+							> h3 {
+								font-size: $mega-menu_mobile_inner-dropdown-menu-head-font-uppercase-size;
+								text-transform: uppercase; 
+							}
+									
+							> a {
+								font-size: $mega-menu_mobile_inner-dropdown-menu-link-uppercase-font-size;
+								text-transform: uppercase; 
+							}
+						}
+					}
+				}
+
+				// Bold font
+				&.c-fonts-bold > .nav.navbar-nav > li {
+					// general link
+					> .c-link {  
+						font-weight: 600;
+					}
+
+					// general dropdown menu
+					.dropdown-menu {
+						> li {
+							> h3 {
+								font-weight: 600;
+							}
+									
+							> a {
+								font-weight: 600;
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+}
+
+// END

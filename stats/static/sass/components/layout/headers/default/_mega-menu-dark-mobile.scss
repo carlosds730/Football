@@ -1,0 +1,15 @@
+// BEGIN: Mega Menu
+
+$mega-menu_class:																'dark-mobile';
+
+$mega-menu_mobile_bg-color:                      								#394048; 
+$mega-menu_mobile_link-border-color:											lighten($mega-menu_mobile_bg-color, 3%);	
+
+$mega-menu_mobile_primary-link-font-color:            							#ebedf2;
+$mega-menu_mobile_primary-link-font-color-on-active:     						#ff6b57;
+
+$mega-menu_mobile_inner-dropdown-menu-head-color:         						#cbd2d9;
+$mega-menu_mobile_inner-dropdown-menu-link-color:                   			#98a2ac;   
+$mega-menu_mobile_inner-dropdown-menu-link-color-on-active:         			#ff6b57;
+
+@import  'theme/mega-menu-mobile';
