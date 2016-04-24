@@ -23,6 +23,7 @@ class FixtureAdmin(AdminImageMixin, admin.ModelAdmin):
     model = models.Fixture
     inlines = [StatsInline]
     list_display = ['number', 'date', 'season']
+    list_filter = ['season__number', 'date', 'number']
 
 
 class SeasonAdmin(admin.ModelAdmin):

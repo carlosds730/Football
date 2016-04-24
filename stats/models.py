@@ -102,7 +102,7 @@ class Fixture(models.Model):
 
     image = ImageField(verbose_name="Foto", upload_to='Jornadas', help_text="Foto de la jornada", blank=True)
 
-    number = models.PositiveSmallIntegerField(verbose_name="Jornada número", default=get_next_fixture)
+    number = models.PositiveSmallIntegerField(verbose_name="Jornada", default=get_next_fixture)
 
     season = models.ForeignKey('Season', related_name='fixtures', verbose_name='Temporada', null=True)
 
