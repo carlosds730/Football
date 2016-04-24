@@ -21,6 +21,8 @@ from stats import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^season/(?P<season>\d+)/?$', views.season, name='season'),
+    url(r'^general/(?P<order>\w+)/?$', views.general, name='general'),
     url(r'^$', views.home, name='home')
 ]
 

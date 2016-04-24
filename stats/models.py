@@ -5,6 +5,7 @@ from decimal import *
 from stats.extra_functions import validate_fixture
 from django.db.models import Sum
 import datetime
+import os
 
 from stats.extra_functions import calculate_elo_simple
 
@@ -113,6 +114,7 @@ class Stats(models.Model):
     class Meta:
         verbose_name = "Actuación"
         verbose_name_plural = "Actuaciones"
+        ordering = ['-elo']
 
     # Related fields
     player = models.ForeignKey('Player', verbose_name="Jugador", related_name="stats")
@@ -171,3 +173,17 @@ class Season(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+
+class MainPictures(models.Model):
+    class Meta:
+        verbose_name = 'Foto Portada'
+        verbose_name_plural = 'Fotos Portada'
+
+    picture = ImageField(verbose_name='Picture', upload_to='Main')
+
+    def name(self):
+        return self.picture.url.split('/')[-1]
+
+    def url(self):
+        return self.picture.url

@@ -53,46 +53,23 @@
             <div class="container">
                 <nav class="c-top-menu">
                     <ul class="c-links c-theme-ul">
+                        {#                        <li>#}
+                        {#                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for clients' %}</a>#}
+                        {#                        </li>#}
+                        {#                        <li>#}
+                        {#                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for the traveler' %}</a>#}
+                        {#                        </li>#}
+                        {#                        <li class="c-divider">#}
+                        {#                        </li>#}
                         <li>
-                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for clients' %}</a>
+                            <a href="#" class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Contact us' %}</a>
                         </li>
-                        <li>
-                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for the traveler' %}</a>
-                        </li>
-                        <li class="c-divider">
-                        </li>
-                        <li>
-                            <a href="#" class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Contact' %}</a>
-                        </li>
-                        <li>
-                            <a href="javascript:;" data-toggle="modal" data-target="#login-form"
-                               class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold">{% trans 'Log Out' %}</a>
-                        </li>
+                        {#                        <li>#}
+                        {#                            <a href="javascript:;" data-toggle="modal" data-target="#login-form"#}
+                        {#                               class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold">{% trans 'Log Out' %}</a>#}
+                        {#                        </li>#}
                     </ul>
-                    <ul class="c-ext c-theme-ul">
-                        {% get_current_language as LANGUAGE_CODE %}
-                        {% get_available_languages as LANGUAGES %}
-                        {% get_language_info_list for LANGUAGES as languages %}
-                        <li class="c-lang dropdown c-last">
-                            <a style="cursor: default;">{{ LANGUAGE_CODE }}</a>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                                {% for lang in languages %}
-                                    <li>
-                                        <a href="/change-language/?lang={{ lang.code }}">{{ lang.name }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        <li class="c-search hide">
-                            <!-- BEGIN: QUICK SEARCH -->
-                            <form action="#">
-                                <input type="text" name="query" placeholder="search..." value="" class="form-control"
-                                       autocomplete="off">
-                                <i class="fa fa-search"></i>
-                            </form>
-                            <!-- END: QUICK SEARCH -->
-                        </li>
-                    </ul>
+
                 </nav>
                 <div class="c-brand">
                     <a href="{% url 'home' %}" class="c-logo">
@@ -140,19 +117,28 @@
                     <nav class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold">
                         <!-- BEGIN: MEGA MENU -->
                         <ul class="nav navbar-nav c-theme-nav">
-                            <li class="c-active c-menu-type-classic">
+                            <li class="c-menu-type-classic">
                                 <a href="{% url 'home' %}" class="c-link dropdown-toggle">{% trans 'Home' %}</a>
                             </li>
                             <li class="c-menu-type-classic">
-                                <a href="" class="c-link dropdown-toggle">{% trans 'Portal' %}</a>
+                                <a href="{% url 'general' 'elo' %}"
+                                   class="c-link dropdown-toggle">{% trans 'General' %}</a>
                             </li>
                             <li class="c-menu-type-classic">
-                                <a href="" class="c-link dropdown-toggle">{% trans 'Advance Search' %}</a>
+                                <a href="" class="c-link dropdown-toggle">{% trans 'Season' %}</a>
+                                <ul class="dropdown-menu c-menu-type-mega c-menu-type-fullwidth">
+                                    <li>
+                                        <ul class="dropdown-menu c-menu-type-inline">
+                                            {% for season in seasons %}
+                                                <li>
+                                                    <a href="{% url 'season' season.number %}">{{ season.number }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
 
-                            <li class="c-search-toggler-wrapper">
-                                <a href="#" class="c-btn-icon c-search-toggler"><i class="fa fa-search"></i></a>
-                            </li>
                         </ul>
                         <!-- END MEGA MENU -->
                     </nav>
@@ -327,181 +313,125 @@
 </div>
 <!-- END: CONTENT/USER/LOGIN-FORM -->
 <!-- BEGIN: LAYOUT/SIDEBARS/QUICK-SIDEBAR -->
-<nav class="c-layout-quick-sidebar">
-    <div class="c-header">
-        <button type="button" class="c-link c-close">
-            <i class="icon-login"></i>
-        </button>
-    </div>
-    <div class="c-content">
-        <div class="c-section">
-            <h3>Header Type</h3>
-            <div class="c-settings">
-                <input type="button"
-                       class="c-setting_header-type btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
-                       data-value="boxed" value="boxed"/>
-                <input type="button"
-                       class="c-setting_header-type btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
-                       data-value="fluid" value="fluid"/>
-            </div>
-        </div>
-        <div class="c-section">
-            <h3>Header Mode</h3>
-            <div class="c-settings">
-                <input type="button"
-                       class="c-setting_header-mode btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
-                       data-value="fixed" value="fixed"/>
-                <input type="button"
-                       class="c-setting_header-mode btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
-                       data-value="static" value="static"/>
-            </div>
-        </div>
-        <div class="c-section">
-            <h3>Mega Menu Style</h3>
-            <div class="c-settings">
-                <input type="button"
-                       class="c-setting_megamenu-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
-                       data-value="dark" value="dark"/>
-                <input type="button"
-                       class="c-setting_megamenu-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
-                       data-value="light" value="light"/>
-            </div>
-        </div>
-        <div class="c-section">
-            <h3>Font Style</h3>
-            <div class="c-settings">
-                <input type="button"
-                       class="c-setting_font-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase active"
-                       data-value="default" value="default"/>
-                <input type="button"
-                       class="c-setting_font-style btn btn-sm c-btn-square c-btn-border-1x c-btn-white c-btn-sbold c-btn-uppercase"
-                       data-value="light" value="light"/>
-            </div>
-        </div>
-    </div>
-</nav>
+
 <!-- END: LAYOUT/SIDEBARS/QUICK-SIDEBAR -->
 <!-- BEGIN: PAGE CONTAINER -->
 <div class="c-layout-page">
-    <!-- BEGIN: PAGE CONTENT -->
-    <!-- BEGIN: LAYOUT/SLIDERS/REVO-SLIDER-9 -->
     {% block main_section %}
-        <section class="c-layout-revo-slider c-layout-revo-slider-2">
-            <div class="tp-banner-container tp-fullscreen tp-fullscreen-mobile">
-                <div class="tp-banner">
-                    <ul>
-                        <!--BEGIN: SLIDE #1 -->
-                        <li data-transition="fade" data-slotamount="1" data-masterspeed="1000">
-                            <img alt="" src="{% static 'images/Foto_background.jpg' %}"
-                                 data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
-                            <!--BEGIN: MAIN TITLE -->
-                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
-                                 data-hoffset="-180" data-voffset="-130" data-speed="500" data-start="1000"
-                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
-                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
-                                <h3 class="c-font-44 c-font-bold c-font-uppercase c-font-white">
-                                    Incredibly robust for any concept </h3>
-                            </div>
-                            <!--END -->
-                            <!--BEGIN: SUB TITLE -->
-                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
-                                 data-hoffset="-270" data-voffset="-20" data-speed="500" data-start="1500"
-                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
-                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
-                                <p class="c-font-24 c-font-white">
-                                    Lorem ipsum dolor sit amet, consectetuer et nibh euismod<br>
-                                    Dolor sit amet, consectetuer et nibh euismod<br>
-                                    elit sed diam nonummy et nibh euismod<br>
-                                </p>
-                            </div>
-                            <!--END -->
-                            <!--BEGIN: ACTION BUTTON -->
-                            <div class="caption randomrotateout tp-resizeme" data-x="center" data-y="center"
-                                 data-hoffset="-460" data-voffset="100" data-speed="500" data-start="2000"
-                                 data-easing="Back.easeOut">
-                                <a href="#"
-                                   class="btn btn-xlg c-btn-square c-btn-bold c-btn-border-2x c-btn-white c-btn-uppercase">Explore</a>
-                            </div>
-                            <!--END -->
-                        </li>
-                        <!--END -->
-                        <!--BEGIN: SLIDE #2 -->
-                        <li data-transition="fade" data-slotamount="1" data-masterspeed="1000">
-                            <img alt="" src="{% static 'images/Foto_background.jpg' %}"
-                                 data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat">
-                            <!--BEGIN: MAIN TITLE -->
-                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
-                                 data-voffset="-100" data-speed="500" data-start="1000"
-                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
-                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
-                                <h3 class="c-font-50 c-font-bold c-font-uppercase c-font-white">
-                                    Ultimate Multipurpose theme </h3>
-                            </div>
-                            <!--END -->
-                            <!--BEGIN: SUB TITLE -->
-                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
-                                 data-voffset="10" data-speed="500" data-start="1500"
-                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
-                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
-                                <p class="c-font-24 c-font-white c-center">
-                                    Lorem ipsum dolor sit amet, consectetuer et nibh euismod<br>
-                                    Dolor sit amet, consectetuer et nibh euismod<br>
-                                    elit sed diam nonummy et nibh euismod<br>
-                                </p>
-                            </div>
-                            <!--END -->
-                            <!--BEGIN: ACTION BUTTON -->
-                            <div class="caption randomrotateout tp-resizeme" data-x="center" data-y="center"
-                                 data-voffset="120" data-speed="500" data-start="2000" data-easing="Back.easeOut">
-                                <a href="#"
-                                   class="btn btn-xlg c-btn-square c-btn-bold c-btn-border-2x c-theme-btn c-btn-uppercase">Explore</a>
-                            </div>
-                            <!--END -->
-                        </li>
-                        <!--END -->
-                        <!--BEGIN: SLIDE #3 -->
-                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="6000"
-                            data-thumb="">
-                            <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
-                            <img src="{% static 'images/Foto_background.jpg' %}" alt="">
-{#                            <div class="caption fulllscreenvideo tp-videolayer" data-x="0" data-y="0" data-speed="600"#}
-{#                                 data-start="1000" data-easing="Power4.easeOut" data-endspeed="500"#}
-{#                                 data-endeasing="Power4.easeOut" data-autoplay="true" data-autoplayonlyfirsttime="false"#}
-{#                                 data-nextslideatend="true" data-videowidth="100%" data-videoheight="100%"#}
-{#                                 data-videopreload="meta" data-videomp4="assets/base/media/video/video-2.mp4"#}
-{#                                 data-videowebm="" data-videocontrols="none" data-forcecover="1" data-forcerewind="on"#}
-{#                                 data-aspectratio="16:9" data-volume="mute"#}
-{#                                 data-videoposter="assets/base/img/layout/sliders/revo-slider/base/blank.png">#}
-{#                            </div>#}
-                            <div class="caption customin customout tp-resizeme" data-x="center" data-y="center"
-                                 data-hoffset="" data-voffset="-30" data-speed="500" data-start="1000"
-                                 data-customin="x:0;y:0;z:0;rotationX:0.5;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                                 data-easing="Back.easeOut" data-splitin="none" data-splitout="none"
-                                 data-elementdelay="0.1" data-endelementdelay="0.1" data-endspeed="600">
-                                <h3 class="c-font-55 c-font-bold c-font-center c-font-uppercase c-font-white c-block">
-                                    Design that speaks<br>
-                                    to modern trends </h3>
-                            </div>
-                            <div class="caption lft tp-resizeme" data-x="center" data-y="center" data-voffset="130"
-                                 data-speed="900" data-start="2000" data-easing="easeOutExpo">
-                                <a href="#"
-                                   class="btn-xlg btn c-btn-square c-btn-border-2x c-btn-white c-btn-bold c-btn-uppercase">Purchase</a>
-                            </div>
-                        </li>
-                        <!--END -->
-                    </ul>
-                </div>
+
+        <!-- BEGIN: PAGE CONTENT -->
+        <!-- BEGIN: LAYOUT/SLIDERS/REVO-SLIDER-9 -->
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-8">
+                <section class="c-layout-revo-slider c-layout-revo-slider-2">
+                    <div class="tp-banner-container tp-fullscreen tp-fullscreen-mobile">
+
+                        <div class="tp-banner">
+                            <ul>
+                                {% for picture in main_pictures %}
+                                    <!--BEGIN: SLIDE #1 -->
+                                    <li data-transition="fade" data-slotamount="1" data-masterspeed="1000">
+                                        {% thumbnail picture.picture "500x500" as im %}
+                                            <img alt="" src="{{ im.url }}" height="90%" width="90%"
+                                                 data-bgposition="center center" data-bgfit="cover"
+                                                 data-bgrepeat="no-repeat">
+                                        {% endthumbnail %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
             </div>
-        </section>
+            <div class="col-xs-6 col-md-4">
+                <h1 class="text-center">Last Day Match</h1>
+                <div class="c-content-panel">
+                    <div class="c-body">
+                        <div class="c-content-tab-1 c-theme">
+                            <div class="nav-justified">
+                                <ul class="nav nav-tabs nav-justified c-font-uppercase c-font-bold">
+                                    <li class="active">
+                                        <a href="#tab_3_1_content" data-toggle="tab" class="c-border-purple">Last</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_3_2_content" data-toggle="tab" class="c-border-purple">Goals</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_3_3_content" data-toggle="tab" class="c-border-purple">Assist</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content c-bordered c-padding-lg">
+                                <div class="tab-pane active" id="tab_3_1_content">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th> Ranking</th>
+                                            <th> Name</th>
+                                            <th> Score</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for stats in last_matchday %}
+                                            <tr>
+                                                <th scope="row"> {{ forloop.counter }}</th>
+                                                <td> {{ stats.player.name }}</td>
+                                                <td> {{ stats.elo }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="tab_3_2_content">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th> Ranking</th>
+                                            <th> Name</th>
+                                            <th> Goals</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for player in goals %}
+                                            <tr>
+                                                <th scope="row"> {{ forloop.counter }}</th>
+                                                <td> {{ player.player.name }}</td>
+                                                <td> {{ player.goals }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="tab_3_3_content">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th> Ranking</th>
+                                            <th> Name</th>
+                                            <th> Assists</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for player in assist %}
+                                            <tr>
+                                                <th scope="row"> {{ forloop.counter }}</th>
+                                                <td> {{ player.player.name }}</td>
+                                                <td> {{ player.assists }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
 
         <!-- END: LAYOUT/SLIDERS/REVO-SLIDER-9 -->
         <!-- BEGIN: CONTENT/BARS/BAR-3 -->
@@ -534,10 +464,12 @@
                 </div>
             </div>
         </div>
-    {% endblock %}
-    <!-- END: CONTENT/BARS/BAR-3 -->
-    <!-- BEGIN: CONTENT/PRODUCTS/PRODUCT-1 -->
 
+        <!-- END: CONTENT/BARS/BAR-3 -->
+        <!-- BEGIN: CONTENT/PRODUCTS/PRODUCT-1 -->
+
+
+    {% endblock %}
 </div>
 <!-- END: PAGE CONTAINER -->
 <!-- BEGIN: LAYOUT/FOOTERS/FOOTER-5 -->
