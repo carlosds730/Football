@@ -13,6 +13,7 @@ def wrapper(request, page, context):
 
 # Create your views here.
 def home(request):
+    # return 'Hello'
     if request.method == 'GET':
         main_pictures = models.MainPictures.objects.all()
         cursor = models.Fixture.objects.order_by('-number')[0].stats.all()
