@@ -6,10 +6,12 @@ from stats.extra_functions import validate_fixture
 from django.db.models import Sum
 import datetime
 import os
-
 from stats.extra_functions import calculate_elo_simple
 
 
+# TODO: get_last season.
+
+# TODO: get_next_fixture should return the number of the next fixture of the active season.
 def get_next_fixture():
     """
     Get the number of the next Fixture
@@ -30,72 +32,143 @@ def get_next_fixture_date():
     Get the date of the next Fixture
     """
 
-    a = Fixture.objects.first()
+    a = Fixture.objects.last()
     if a:
         return a.date + datetime.timedelta(7)
     else:
         return datetime.date(2015, 6, 14)
 
 
-# Create your models here.
+def get_total_stats(stats_query_set=None, player_performance_query_set=None):
+    """
+    Returns the overall stats (an Stats object) of a collection of Stats or PlayerPerformance objects.
+    Parameters stats_query_set and player_performance_query_set should not be used at the same time, if this happens
+    only the stats_query_set will be used.
+    :param stats_query_set: Stats QuerySet to extract the data from
+    :type stats_query_set: QuerySet(Stats)
+    :param player_performance_query_set: PlayerPerformance QuerySet to extract the data from
+    :type player_performance_query_set: QuerySet(PlayerPerformance)
+    :return: An Stats object
+    :rtype: Stats
+    """
+    data = None
+    if stats_query_set:
+        data = stats_query_set.aggregate(games_played=Sum('games_played'), wins=Sum('wins'),
+                                         losses=Sum('losses'),
+                                         draws=Sum('draws'), goals=Sum('goals'),
+                                         assists=Sum('assists'))
+    elif player_performance_query_set:
+        data = player_performance_query_set.aggregate(games_played=Sum('stat__games_played'), wins=Sum('stat__wins'),
+                                                      losses=Sum('stat__losses'),
+                                                      draws=Sum('stat__draws'), goals=Sum('stat__goals'),
+                                                      assists=Sum('stat__assists'))
+    if data:
+        return Stats.objects.create(games_played=data['games_played'],
+                                    wins=data['wins'],
+                                    losses=data['losses'],
+                                    draws=data['draws'],
+                                    goals=data['goals'],
+                                    assists=data['assists'])
+    else:
+        return None
+
 
 class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
         verbose_name_plural = "Jugadores"
-        ordering = ['-elo']
+        ordering = ['name']
 
     name = models.CharField(verbose_name="Nombre", help_text="Nombre del jugador", max_length=200, unique=True)
 
     image = ImageField(verbose_name="Avatar", upload_to='Avatars', help_text="Foto del jugador", blank=True)
 
-    # Numeric fields
-
-    games_played = models.PositiveSmallIntegerField(verbose_name="Juegos jugados", default=0)
-
-    wins = models.PositiveSmallIntegerField(verbose_name="Juegos ganados", default=0)
-
-    draws = models.PositiveSmallIntegerField(verbose_name="Juegos empatados", default=0)
-
-    losses = models.PositiveSmallIntegerField(verbose_name="Juegos perdidos", default=0)
-
-    goals = models.PositiveSmallIntegerField(verbose_name="Goles anotados", default=0)
-
-    assists = models.PositiveSmallIntegerField(verbose_name="Asistencias", default=0)
-
-    elo = models.DecimalField(verbose_name="ELO", max_digits=7, decimal_places=5, default=0)
+    global_stats = models.OneToOneField('Stats', verbose_name='Estadísticas globales',
+                                        help_text='Estadísticas totales del jugador. Incluye todas las temporadas',
+                                        blank=True, null=True)
 
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        # self.calculate_player_stats()
-        self.elo = self.calculate_elo()
-        super(Player, self).save(*args, **kwargs)
-
-    def calculate_elo(self):
-        return calculate_elo_simple(self.games_played, self.wins, self.losses, self.draws, self.goals, self.assists)
-
-    def calculate_player_stats(self):
-        data = Stats.objects.filter(player=self).aggregate(Sum('games_played'), Sum('wins'), Sum('losses'),
-                                                           Sum('draws'), Sum('goals'), Sum('assists'))
-        if data:
-            self.games_played = data['games_played__sum']
-            self.wins = data['wins__sum']
-            self.losses = data['losses__sum']
-            self.draws = data['draws__sum']
-            self.goals = data['goals__sum']
-            self.assists = data['assists__sum']
+    def update_global_stats(self):
+        """
+        Update the global_stats attribute of the current player.
+        """
+        global_stats = self.calculate_global_stats()
+        if global_stats:
+            self.global_stats = global_stats
             self.save()
-            self.calculate_elo()
-            self.save()
+
+    def calculate_global_stats(self):
+        """
+        Calculates the global stats of the current player.
+        :return: Returns an Stats objects that contains the global stats of the current player
+        :rtype: Stats
+        """
+        my_stats = PlayerPerformance.objects.filter(player=self)
+        if my_stats.count() > 0:
+            return get_total_stats(player_performance_query_set=my_stats)
+        else:
+            return None
+
+
+class PlayerPerformanceCreator(models.Manager):
+    def create_performance(self, player, fixture, stat=None, games_played=0, wins=0, draws=0, losses=0, goals=0,
+                           assists=0):
+        """
+        This method creates a PlayerPerformance object given a player, a fixture and a Stats object.
+        If the stat parameter isn't provided you can pass the necessary to create one, if you don't, an Stats object
+        with all data set to 0 will be created.
+        """
+        if not stat:
+            stat = Stats.objects.create(games_played=games_played,
+                                        wins=wins,
+                                        draws=draws,
+                                        losses=losses,
+                                        goals=goals,
+                                        assists=assists)
+        performance = self.create(player=player, fixture=fixture, stat=stat)
+        return performance
+
+
+class LastFixture(models.Manager):
+    def get_queryset(self):
+        last_fixture = Fixture.objects.latest('date')
+        return super(LastFixture, self).get_queryset().filter(fixture=last_fixture)
+
+
+class PlayerPerformance(models.Model):
+    # This models represents the performance of a player in a fixture.
+    class Meta:
+        verbose_name = 'Desempeño'
+        verbose_name_plural = 'Desempeños'
+        # A player can't have more than one PlayerPerformance per fixture
+        unique_together = ('player', 'fixture')
+
+    player = models.ForeignKey('Player', related_name='performances', verbose_name='Jugaodr')
+
+    fixture = models.ForeignKey('Fixture', related_name='performances', verbose_name='Jornada')
+
+    stat = models.OneToOneField('Stats', verbose_name='Estadística')
+
+    # We override the default manager because we want to use the create_performance method to create
+    # PlayerPerformance objects
+    # To create PlayerPerformance objects DO NOT USE objects.create, USE instead objects.create_performance
+    objects = PlayerPerformanceCreator()
+
+    # Use this manager to obtain the PlayerPerformances of the last_fixture
+    last_fixture_stats = LastFixture()
+
+    def __str__(self):
+        return "Jornada %s (%s)" % (self.fixture.number, str(self.fixture.date))
 
 
 class Fixture(models.Model):
     class Meta:
         verbose_name = "Jornada"
         verbose_name_plural = "Jornadas"
-        ordering = ['-number']
+        ordering = ['number']
+        unique_together = ('number', 'season')
 
     date = models.DateField(verbose_name="Fecha", help_text="Fecha de la jornada", unique=True,
                             default=get_next_fixture_date)
@@ -116,12 +189,6 @@ class Stats(models.Model):
         verbose_name_plural = "Actuaciones"
         ordering = ['-elo']
 
-    # Related fields
-    player = models.ForeignKey('Player', verbose_name="Jugador", related_name="stats")
-
-    fixture = models.ForeignKey('Fixture', verbose_name="Jornada", related_name="stats")
-
-    # Numeric fields
     games_played = models.PositiveSmallIntegerField(verbose_name="Juegos jugados", default=0)
 
     wins = models.PositiveSmallIntegerField(verbose_name="Juegos ganados", default=0)
@@ -137,28 +204,26 @@ class Stats(models.Model):
     elo = models.DecimalField(verbose_name="ELO", max_digits=7, decimal_places=5, default=0)
 
     def save(self, *args, **kwargs):
+        """
+        Overrides the save method.
+        It verifies that Stats object is valid, calculates its ELO and finally saves the object.
+        """
         validate_fixture(self.games_played, self.wins, self.losses, self.draws)
         self.elo = self.calculate_elo()
         super(Stats, self).save(*args, **kwargs)
-        self.player.calculate_player_stats()
-        # self.update_player()
 
     def calculate_elo(self):
+        """
+        Calculates the ELO of the current Stats object
+        :return: ELO
+        :rtype: double
+        """
         return calculate_elo_simple(self.games_played, self.wins, self.losses, self.draws, self.goals, self.assists)
 
-    # WARNING: This shouldn't be used at least you can be sure the Stats object is being created and not updated
-    def update_player(self):
-        print(self.player.name + str(self.fixture))
-        player = self.player
-        player.games_played += self.games_played
-        player.wins += self.wins
-        player.losses += self.losses
-        player.draws += self.draws
-        player.goals += self.goals
-        player.assists += self.assists
-        player.save()
-        player.elo = player.calculate_elo()
-        player.save()
+
+class ActivePlayers(models.Manager):
+    def get_queryset(self):
+        return super(ActivePlayers, self).get_queryset().filter(author='Roald Dahl')
 
 
 class Season(models.Model):
@@ -173,6 +238,36 @@ class Season(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+    @property
+    def init_date(self):
+        """
+        Returns the date of the first fixture related with this season
+        :return: Date of the first fixture related with this season
+        :rtype: date
+        """
+        return self.fixtures.first().date
+
+    @property
+    def end_date(self):
+        """
+        Returns the date of the last fixture related with this season
+        :return: Date of the last fixture related with this season
+        :rtype: date
+        """
+        return self.fixtures.last().date
+
+    @property
+    def _num_fixtures(self):
+        """
+        Returns the number of fixtures in the current season.
+        For performance optimization this method should be used only if you just need the number of fixtures in this
+        season. If you want to do some work with the fixtures related to this season is better to load those records
+        into python objects and use len.
+        :return: the number of fixtures in the given season
+        :rtype: int
+        """
+        return self.fixtures.count()
 
 
 class MainPictures(models.Model):

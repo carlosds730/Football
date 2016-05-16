@@ -1,22 +1,23 @@
 from django.contrib import admin
 from sorl.thumbnail.admin import AdminImageMixin
-
 from stats import models
 
 
 # Register your models here.
 
 class StatsInline(admin.StackedInline):
-    model = models.Stats
+    model = models.PlayerPerformance
     extra = 0
-    readonly_fields = ['elo']
+
+
+class GlobalStatsInline(admin.StackedInline):
+    model = models.Stats
 
 
 class PlayersAdmin(AdminImageMixin, admin.ModelAdmin):
     model = models.Player
     inlines = [StatsInline]
-    list_display = ['name', 'elo', 'goals', 'assists', 'wins', 'draws', 'losses']
-    readonly_fields = ['games_played', 'wins', 'losses', 'draws', 'goals', 'assists', 'elo']
+    readonly_fields = ['global_stats']
 
 
 class FixtureAdmin(AdminImageMixin, admin.ModelAdmin):

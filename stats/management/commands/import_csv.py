@@ -6,7 +6,7 @@ import os
 import sys
 from Football.settings import STATS_PATH
 from stats import models
-from stats.models import Player, Fixture, Stats
+from stats.models import Player, Fixture, Stats, PlayerPerformance
 import datetime
 from django.core.management.base import BaseCommand, CommandError
 
@@ -31,21 +31,13 @@ def test(path):
                 continue
             player, _ = Player.objects.get_or_create(name=row[0])
 
-            Stats.objects.create(player=player, fixture=fixture, games_played=int(row[1]),
-                                 wins=int(row[2]) if row[2] != '' else 0,
-                                 draws=int(row[3]) if row[3] != '' else 0,
-                                 losses=int(row[4]) if row[4] != '' else 0,
-                                 goals=int(row[5]) if row[5] != '' else 0,
-                                 assists=int(row[6]) if row[6] != '' else 0
-                                 )
-
-            # stats, _ = Stats.objects.get_or_create(player=player, fixture=fixture,
-            #                                        defaults={'games_played': int(row[1]),
-            #                                                  'wins': int(row[2]) if row[2] != '' else 0,
-            #                                                  'draws': int(row[3]) if row[3] != '' else 0,
-            #                                                  'losses': int(row[4]),
-            #                                                  'goals': int(row[5]) if row[5] != '' else 0,
-            #                                                  'assists': int(row[6]) if row[6] != '' else 0})
+            PlayerPerformance.objects.create_performance(player=player, fixture=fixture, games_played=int(row[1]),
+                                                         wins=int(row[2]) if row[2] != '' else 0,
+                                                         draws=int(row[3]) if row[3] != '' else 0,
+                                                         losses=int(row[4]) if row[4] != '' else 0,
+                                                         goals=int(row[5]) if row[5] != '' else 0,
+                                                         assists=int(row[6]) if row[6] != '' else 0
+                                                         )
 
 
 def test_error(path):
@@ -76,11 +68,12 @@ def test_error(path):
             stats.save()
 
 
-def test_error_one(path, jornada):
+def test_error_one(path, jornada, season):
     with open(path, newline='') as csvfile:
         line = csv.reader(csvfile, delimiter=',', quotechar='|')
         next(line)
         fixture = Fixture.objects.create()
+        fixture.season = season
         fixture.save()
 
         for row in line:
@@ -90,16 +83,16 @@ def test_error_one(path, jornada):
             player, _ = Player.objects.get_or_create(name=row[0])
             player.save()
 
-            stats, _ = Stats.objects.get_or_create(player=player, fixture=fixture,
-                                                   defaults={'games_played': int(row[1]),
-                                                             'wins': int(row[2]) if row[2] != '' else 0,
-                                                             'draws': int(row[3]) if row[3] != '' else 0,
-                                                             'losses': int(row[4]),
-                                                             'goals': int(row[5]) if row[5] != '' else 0,
-                                                             'assists': int(row[6]) if row[6] != '' else 0})
+            PlayerPerformance.objects.create_performance(player=player, fixture=fixture, games_played=int(row[1]),
+                                                         wins=int(row[2]) if row[2] != '' else 0,
+                                                         draws=int(row[3]) if row[3] != '' else 0,
+                                                         losses=int(row[4]) if row[4] != '' else 0,
+                                                         goals=int(row[5]) if row[5] != '' else 0,
+                                                         assists=int(row[6]) if row[6] != '' else 0
+                                                         )
 
 
-def import_all_fixtures(path):
+def import_all_fixtures(path, season=models.Season.objects.last()):
     import re
     files = os.listdir(path)
     f = []
@@ -107,10 +100,10 @@ def import_all_fixtures(path):
         f.append(int(re.search("\d+", x).group()))
 
     f.sort()
-    fixtures = [x.numero for x in Fixture.objects.all()]
+    fixtures = [x.number for x in Fixture.objects.all()]
     for file in f:
         if file not in fixtures:
-            test_error_one(os.path.join(path, 'jornada' + str(file) + '.csv'), file)
+            test_error_one(os.path.join(path, 'jornada' + str(file) + '.csv'), file, season)
 
 
 def fix_dates(pk):
@@ -129,6 +122,7 @@ def fix_dates(pk):
     fix.save()
 
 
+# TODO: This command should allow us to specify the the season (the number) corresponding to the fixtures we are importing.
 class Command(BaseCommand):
     help = "Import all stats"
 
@@ -137,4 +131,4 @@ class Command(BaseCommand):
             import_all_fixtures(STATS_PATH)
         except Exception as e:
             raise CommandError('Something went wrong "%s"' % e)
-        self.stdout.write(self.style.SUCCESS('Successfully countries import'))
+        self.stdout.write(self.style.SUCCESS('Stats imported successfully'))

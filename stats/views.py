@@ -13,13 +13,12 @@ def wrapper(request, page, context):
 
 # Create your views here.
 def home(request):
-    # return 'Hello'
     if request.method == 'GET':
         main_pictures = models.MainPictures.objects.all()
-        cursor = models.Fixture.objects.order_by('-number')[0].stats.all()
+        cursor = models.PlayerPerformance.last_fixture_stats.order_by('-stat__elo')
         last_day = [x for x in cursor]
-        goals = [x for x in cursor.order_by('-goals') if x.goals]
-        assist = [x for x in cursor.order_by('-assists') if x.assists]
+        goals = [x for x in cursor.order_by('-stat__goals') if x.stat.goals]
+        assist = [x for x in cursor.order_by('-stat__assists') if x.stat.assists]
         context = {
             'main_pictures': main_pictures,
             'goals': goals,
@@ -34,5 +33,5 @@ def season(request, season):
 
 
 def general(request, order):
-    players = models.Player.objects.all().order_by('-' + order)
+    players = models.Player.objects.order_by('-global_stats__' + order).all()
     return wrapper(request, 'general.html', {'players': players})

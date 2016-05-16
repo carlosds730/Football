@@ -162,9 +162,11 @@
             </div>
             <div class="modal-body">
                 <h3 class="c-font-24 c-font-sbold">Password Recovery</h3>
+
                 <p>
                     To recover your password please fill in your email address
                 </p>
+
                 <form>
                     <div class="form-group">
                         <label for="forget-email" class="hide">Email</label>
@@ -200,9 +202,11 @@
             </div>
             <div class="modal-body">
                 <h3 class="c-font-24 c-font-sbold">Create An Account</h3>
+
                 <p>
                     Please fill in below form to create an account with us
                 </p>
+
                 <form>
                     <div class="form-group">
                         <label for="signup-email" class="hide">Email</label>
@@ -249,9 +253,11 @@
             </div>
             <div class="modal-body">
                 <h3 class="c-font-24 c-font-sbold">Good Afternoon!</h3>
+
                 <p>
                     Let's make today a great day!
                 </p>
+
                 <form>
                     <div class="form-group">
                         <label for="login-email" class="hide">Email</label>
@@ -346,7 +352,8 @@
 
             </div>
             <div class="col-xs-6 col-md-4">
-                <h1 class="text-center">Last Day Match</h1>
+                <h1 class="text-center">Last Match Day</h1>
+
                 <div class="c-content-panel">
                     <div class="c-body">
                         <div class="c-content-tab-1 c-theme">
@@ -378,7 +385,7 @@
                                             <tr>
                                                 <th scope="row"> {{ forloop.counter }}</th>
                                                 <td> {{ stats.player.name }}</td>
-                                                <td> {{ stats.elo }}</td>
+                                                <td> {{ stats.stat.elo }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -398,7 +405,7 @@
                                             <tr>
                                                 <th scope="row"> {{ forloop.counter }}</th>
                                                 <td> {{ player.player.name }}</td>
-                                                <td> {{ player.goals }}</td>
+                                                <td> {{ player.stat.goals }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -418,7 +425,7 @@
                                             <tr>
                                                 <th scope="row"> {{ forloop.counter }}</th>
                                                 <td> {{ player.player.name }}</td>
-                                                <td> {{ player.assists }}</td>
+                                                <td> {{ player.stat.assists }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -442,6 +449,7 @@
                         <div class="col-md-7">
                             <div class="c-content-title-1">
                                 <h3 class="c-font-uppercase c-font-bold">DEDICATED SUPPORT</h3>
+
                                 <p class="c-font-uppercase">
                                     JANGO comes with top-of-the-line support teams to ensure that we provide the best
                                     experience for our customers
