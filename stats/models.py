@@ -41,14 +41,14 @@ def get_next_fixture_date():
 
 def get_total_stats(stats_query_set=None, player_performance_query_set=None):
     """
-    Returns the overall stats (an Stats object) of a collection of Stats or PlayerPerformance objects.
-    Parameters stats_query_set and player_performance_query_set should not be used at the same time, if this happens
-    only the stats_query_set will be used.
+    Returns the overall stats (an Stats object which is a python object and is not stored in the database) of a
+    collection of Stats or PlayerPerformance objects. Parameters stats_query_set and player_performance_query_set
+    should not be used at the same time, if this happens only the stats_query_set will be used.
     :param stats_query_set: Stats QuerySet to extract the data from
     :type stats_query_set: QuerySet(Stats)
     :param player_performance_query_set: PlayerPerformance QuerySet to extract the data from
     :type player_performance_query_set: QuerySet(PlayerPerformance)
-    :return: An Stats object
+    :return: An Stats object (is a python object is not stored in the database)
     :rtype: Stats
     """
     data = None
@@ -63,12 +63,12 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
                                                       draws=Sum('stat__draws'), goals=Sum('stat__goals'),
                                                       assists=Sum('stat__assists'))
     if data:
-        return Stats.objects.create(games_played=data['games_played'],
-                                    wins=data['wins'],
-                                    losses=data['losses'],
-                                    draws=data['draws'],
-                                    goals=data['goals'],
-                                    assists=data['assists'])
+        return Stats(games_played=data['games_played'],
+                     wins=data['wins'],
+                     losses=data['losses'],
+                     draws=data['draws'],
+                     goals=data['goals'],
+                     assists=data['assists'])
     else:
         return None
 
@@ -83,21 +83,23 @@ class Player(models.Model):
 
     image = ImageField(verbose_name="Avatar", upload_to='Avatars', help_text="Foto del jugador", blank=True)
 
-    global_stats = models.OneToOneField('Stats', verbose_name='Estadísticas globales',
-                                        help_text='Estadísticas totales del jugador. Incluye todas las temporadas',
-                                        blank=True, null=True)
-
     def __str__(self):
         return self.name
 
     def update_global_stats(self):
         """
         Update the global_stats attribute of the current player.
+        It saves the player object by itself
         """
+        try:
+            stat = self.global_stats
+            stat.delete()
+        except Stats.DoesNotExist:
+            pass
         global_stats = self.calculate_global_stats()
         if global_stats:
-            self.global_stats = global_stats
-            self.save()
+            global_stats.player = self
+            global_stats.save()
 
     def calculate_global_stats(self):
         """
@@ -116,7 +118,7 @@ class PlayerPerformanceCreator(models.Manager):
     def create_performance(self, player, fixture, stat=None, games_played=0, wins=0, draws=0, losses=0, goals=0,
                            assists=0):
         """
-        This method creates a PlayerPerformance object given a player, a fixture and a Stats object.
+        This method creates a PlayerPerformance object given of a player, a fixture and a Stats object.
         If the stat parameter isn't provided you can pass the necessary to create one, if you don't, an Stats object
         with all data set to 0 will be created.
         """
@@ -127,7 +129,9 @@ class PlayerPerformanceCreator(models.Manager):
                                         losses=losses,
                                         goals=goals,
                                         assists=assists)
-        performance = self.create(player=player, fixture=fixture, stat=stat)
+        performance = self.create(player=player, fixture=fixture)
+        stat.stat = performance
+        stat.save()
         return performance
 
 
@@ -148,8 +152,6 @@ class PlayerPerformance(models.Model):
     player = models.ForeignKey('Player', related_name='performances', verbose_name='Jugaodr')
 
     fixture = models.ForeignKey('Fixture', related_name='performances', verbose_name='Jornada')
-
-    stat = models.OneToOneField('Stats', verbose_name='Estadística')
 
     # We override the default manager because we want to use the create_performance method to create
     # PlayerPerformance objects
@@ -203,6 +205,12 @@ class Stats(models.Model):
 
     elo = models.DecimalField(verbose_name="ELO", max_digits=7, decimal_places=5, default=0)
 
+    player = models.OneToOneField('Player', verbose_name='Estadísticas globales', related_name='global_stats',
+                                  blank=True, null=True,
+                                  help_text='Estadísticas totales del jugador. Incluye todas las temporadas')
+
+    stat = models.OneToOneField('PlayerPerformance', related_name='stat', blank=True, null=True)
+
     def save(self, *args, **kwargs):
         """
         Overrides the save method.
@@ -234,7 +242,7 @@ class Season(models.Model):
 
     number = models.PositiveIntegerField(verbose_name='Numero')
 
-    name = models.CharField(verbose_name='Nombre', max_length=200)
+    name = models.CharField(verbose_name='Nombre', max_length=200, blank=True, null=True)
 
     def __str__(self):
         return str(self.number)

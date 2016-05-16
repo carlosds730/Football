@@ -1,28 +1,42 @@
 from django.contrib import admin
 from sorl.thumbnail.admin import AdminImageMixin
+import nested_admin
 from stats import models
 
 
 # Register your models here.
 
-class StatsInline(admin.StackedInline):
+class StatInline(nested_admin.NestedStackedInline):
+    model = models.Stats
+    readonly_fields = ['games_played', 'wins', 'draws', 'losses', 'goals', 'assists', 'elo']
+    exclude = ['stat', 'player']
+
+
+class StatsInline(nested_admin.NestedStackedInline):
     model = models.PlayerPerformance
+    inlines = [StatInline]
+    readonly_fields = ['fixture']
     extra = 0
 
 
 class GlobalStatsInline(admin.StackedInline):
     model = models.Stats
+    readonly_fields = ['games_played', 'wins', 'draws', 'losses', 'goals', 'assists', 'elo']
+    verbose_name = 'Estadística global'
+    verbose_name_plural = 'Estadísticas globales'
+    exclude = ['stat']
+    # readonly_fields = ()
 
 
-class PlayersAdmin(AdminImageMixin, admin.ModelAdmin):
+class PlayersAdmin(AdminImageMixin, nested_admin.NestedModelAdmin):
     model = models.Player
-    inlines = [StatsInline]
-    readonly_fields = ['global_stats']
+    inlines = [GlobalStatsInline, StatsInline]
 
 
 class FixtureAdmin(AdminImageMixin, admin.ModelAdmin):
     model = models.Fixture
     inlines = [StatsInline]
+
     list_display = ['number', 'date', 'season']
     list_filter = ['season__number', 'date', 'number']
 

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^season/(?P<season>\d+)/?$', views.season, name='season'),
     url(r'^general/(?P<order>\w+)/?$', views.general, name='general'),
+    url(r'^nested_admin/', include('nested_admin.urls')),
     url(r'^$', views.home, name='home')
 ]
 

@@ -94,6 +94,8 @@ def test_error_one(path, jornada, season):
 
 def import_all_fixtures(path, season=models.Season.objects.last()):
     import re
+    if not season:
+        season = models.Season.objects.create(number=1, name='Primera Temporada')
     files = os.listdir(path)
     f = []
     for x in files:
@@ -104,6 +106,9 @@ def import_all_fixtures(path, season=models.Season.objects.last()):
     for file in f:
         if file not in fixtures:
             test_error_one(os.path.join(path, 'jornada' + str(file) + '.csv'), file, season)
+
+    for player in models.Player.objects.all():
+        player.update_global_stats()
 
 
 def fix_dates(pk):
