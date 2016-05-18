@@ -15,7 +15,7 @@ class StatInline(nested_admin.NestedStackedInline):
 class StatsInline(nested_admin.NestedStackedInline):
     model = models.PlayerPerformance
     inlines = [StatInline]
-    readonly_fields = ['fixture']
+    readonly_fields = ['fixture', 'player']
     extra = 0
 
 
@@ -33,7 +33,7 @@ class PlayersAdmin(AdminImageMixin, nested_admin.NestedModelAdmin):
     inlines = [GlobalStatsInline, StatsInline]
 
 
-class FixtureAdmin(AdminImageMixin, admin.ModelAdmin):
+class FixtureAdmin(AdminImageMixin, nested_admin.NestedModelAdmin):
     model = models.Fixture
     inlines = [StatsInline]
 
