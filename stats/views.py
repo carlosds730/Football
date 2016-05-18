@@ -28,7 +28,7 @@ def home(request):
         return wrapper(request, 'home.html', context)
 
 
-def season(request, season):
+def season(request, season_num):
     raise NotImplemented()
 
 

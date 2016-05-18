@@ -7,6 +7,7 @@ from django.db.models import Sum
 import datetime
 import os
 from stats.extra_functions import calculate_elo_simple
+from django.core.urlresolvers import reverse
 
 
 # TODO: get_last season.
@@ -276,6 +277,9 @@ class Season(models.Model):
         :rtype: int
         """
         return self.fixtures.count()
+
+    def get_absolute_url(self):
+        return reverse('season', args=[self.number])
 
 
 class MainPictures(models.Model):

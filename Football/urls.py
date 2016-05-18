@@ -18,15 +18,38 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from stats import views
+from smarturls import surl
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^season/(?P<season>\d+)/?$', views.season, name='season'),
-    url(r'^general/(?P<order>\w+)/?$', views.general, name='general'),
     url(r'^nested_admin/', include('nested_admin.urls')),
     url(r'^$', views.home, name='home')
+]
+
+urlpatterns += [
+    surl('/season/<int:season_num>/', views.season, name='season'),
+    surl('/general/<word:order>/', views.general, name='general'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
+# Surl
+
+# Examples:
+# urlpatterns = patterns('',
+#     surl('/book/<int:bookid>/', 'some.view'),
+#     surl('/author/<slug:author_name>/', 'some.other.view'),
+#     surl('/year/<int4:year>/', 'year.view'),
+#     surl('/year/<int4:year>/<word:month>/', 'month.view'),
+# )
+
+# Default patterns:
+# int: \d+
+# int2: \d{2,2}
+# int4: \d{4,4}
+# word: \w+
+# slug: [\w-]+
+# digit: \d{1,1}
+# username: [\w.@+-]+
