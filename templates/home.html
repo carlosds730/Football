@@ -10,7 +10,9 @@
 {% block header %}
     <head>
         <meta charset="utf-8"/>
-        <title>Liga Tenis Roto</title>
+        {% block title %}
+            <title>Liga Tenis Roto</title>
+        {% endblock %}
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -53,21 +55,20 @@
             <div class="container">
                 <nav class="c-top-menu">
                     <ul class="c-links c-theme-ul">
-                        {#                        <li>#}
-                        {#                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for clients' %}</a>#}
-                        {#                        </li>#}
-                        {#                        <li>#}
-                        {#                            <a href="#" class="c-font-uppercase c-font-bold">{% trans 'Advice for the traveler' %}</a>#}
-                        {#                        </li>#}
-                        {#                        <li class="c-divider">#}
-                        {#                        </li>#}
-                        <li>
-                            <a href="#" class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Contact us' %}</a>
-                        </li>
-                        {#                        <li>#}
-                        {#                            <a href="javascript:;" data-toggle="modal" data-target="#login-form"#}
-                        {#                               class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold">{% trans 'Log Out' %}</a>#}
-                        {#                        </li>#}
+                        {% if request.user.is_authenticated %}
+                            <li>
+                                Hi {{ request.user.username }}
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}" id="signup"
+                                   class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Log-out' %}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'login' %}" id="signup"
+                                   class="c-font-uppercase c-font-bold c-font-dark">{% trans 'Login' %}</a>
+                            </li>
+                        {% endif %}
                     </ul>
 
                 </nav>
@@ -633,6 +634,9 @@
     <script src="{% static 'base/js/components.js' %}" type="text/javascript"></script>
     <script src="{% static 'base/js/app.js' %}" type="text/javascript"></script>
     <script>
+        function SignUp() {
+
+        }
         $(document).ready(function () {
             App.init(); // init core
 

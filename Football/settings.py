@@ -109,3 +109,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
+
+# User framework
+from django.core.urlresolvers import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
+
+# EMAIL SETTINGS
+# EMAIL_HOST = 'mail.host.com'
+#
+# EMAIL_HOST_USER = ''
+#
+# EMAIL_PORT = 587
+#
+# EMAIL_USE_TLS = True
+#
+# EMAIL_HOST_PASSWORD = ''
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')  # change this to a proper location
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

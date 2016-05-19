@@ -8,6 +8,7 @@ import datetime
 import os
 from stats.extra_functions import calculate_elo_simple
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 
 # TODO: get_last season.
@@ -74,13 +75,29 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
         return None
 
 
+# class PlayerCreator(models.Manager):
+#     def create_player_from_user(self, user):
+#         """
+#         This method creates a PlayerPerformance object given of a player, a fixture and a Stats object.
+#         If the stat parameter isn't provided you can pass the necessary to create one, if you don't, an Stats object
+#         with all data set to 0 will be created.
+#         """
+#         player = self.create(name=user.username, user=user)
+#
+#         return player
+
+
 class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
         verbose_name_plural = "Jugadores"
         ordering = ['name']
 
-    name = models.CharField(verbose_name="Nombre", help_text="Nombre del jugador", max_length=200, unique=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True)
+
+    name = models.CharField(verbose_name="Nombre en el Excel",
+                            help_text="Nombre del jugador tal como aparece en el Excel",
+                            max_length=200, unique=True)
 
     image = ImageField(verbose_name="Avatar", upload_to='Avatars', help_text="Foto del jugador", blank=True)
 
@@ -113,6 +130,11 @@ class Player(models.Model):
             return get_total_stats(player_performance_query_set=my_stats)
         else:
             return None
+
+    def save(self, *args, **kwargs):
+        if self.user and not self.name:
+            self.name = self.user.username
+        super(Player, self).save(*args, **kwargs)
 
 
 class PlayerPerformanceCreator(models.Manager):
