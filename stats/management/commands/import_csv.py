@@ -80,7 +80,7 @@ def test_error_one(path, jornada, season):
             print(row)
             if row[1] == '':
                 continue
-            player, _ = Player.objects.get_or_create(name=row[0])
+            player, _ = Player.objects.get_or_create(name_excel=row[0])
             player.save()
 
             PlayerPerformance.objects.create_performance(player=player, fixture=fixture, games_played=int(row[1]),

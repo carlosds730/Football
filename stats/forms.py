@@ -34,7 +34,7 @@ class UserRegistrationForm(forms.ModelForm):
         """
         cd = self.cleaned_data
         try:
-            player = Player.objects.get(name=cd['username'])
+            player = Player.objects.get(name_excel=cd['username'])
             if player.user:
                 raise forms.ValidationError(
                     'There\'s a user already registered with that username. Choose a different one')
@@ -46,10 +46,10 @@ class UserRegistrationForm(forms.ModelForm):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 
 class PlayerEditForm(forms.ModelForm):
     class Meta:
-        mmodel = Player
-        fields = ('name', 'image')
+        model = Player
+        fields = ('image',)

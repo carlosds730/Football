@@ -91,18 +91,25 @@ class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
         verbose_name_plural = "Jugadores"
-        ordering = ['name']
+        ordering = ['name_excel']
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True)
 
-    name = models.CharField(verbose_name="Nombre en el Excel",
-                            help_text="Nombre del jugador tal como aparece en el Excel",
-                            max_length=200, unique=True)
+    name_excel = models.CharField(verbose_name="Nombre en el Excel",
+                                  help_text="Nombre del jugador tal como aparece en el Excel",
+                                  max_length=200, unique=True)
 
     image = ImageField(verbose_name="Avatar", upload_to='Avatars', help_text="Foto del jugador", blank=True)
 
     def __str__(self):
         return self.name
+
+    @property
+    def name(self):
+        if self.user:
+            return self.user.username
+        else:
+            return self.name_excel
 
     def update_global_stats(self):
         """
@@ -132,6 +139,7 @@ class Player(models.Model):
             return None
 
     def save(self, *args, **kwargs):
+        # If we are creating a Player with user but no name then the player's name will be the username
         if self.user and not self.name:
             self.name = self.user.username
         super(Player, self).save(*args, **kwargs)
