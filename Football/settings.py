@@ -108,7 +108,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-# THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
+THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
 
 # User framework
 from django.core.urlresolvers import reverse_lazy

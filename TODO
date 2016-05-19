@@ -1,4 +1,4 @@
 DONE: See what to do with the admin.
 DONE: Find out how to use an inline inside an inline.
 TODO: Change the look of login, register and passwords views
-TODO: WTF with Wand and Python35
+DONE: WTF with Wand and Python35 (just install version 0.4.2)
