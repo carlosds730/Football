@@ -140,8 +140,8 @@ class Player(models.Model):
 
     def save(self, *args, **kwargs):
         # If we are creating a Player with user but no name then the player's name will be the username
-        if self.user and not self.name:
-            self.name = self.user.username
+        if self.user and not self.name_excel:
+            self.name_excel = self.user.username
         super(Player, self).save(*args, **kwargs)
 
 

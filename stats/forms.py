@@ -48,6 +48,21 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
 
+    def clean_username(self):
+        """
+        Validate that a new user doesn't register with a name that is already in use by another user
+        :return: The username or raise a Validation Error with message
+        """
+        cd = self.cleaned_data
+        try:
+            player = Player.objects.get(name_excel=cd['username'])
+            if (player.user != self.instance) or (self.instance.player != player):
+                raise forms.ValidationError(
+                    'There\'s a user already registered with that username. Choose a different one')
+            return cd['username']
+        except Player.DoesNotExist:
+            return cd['username']
+
 
 class PlayerEditForm(forms.ModelForm):
     class Meta:

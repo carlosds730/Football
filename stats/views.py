@@ -52,7 +52,12 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
-            player, _ = models.Player.objects.get_or_create(user=new_user)
+            try:
+                player = models.Player.objects.get(name_excel=new_user.username)
+                player.user = new_user
+                player.save()
+            except models.Player.DoesNotExist:
+                models.Player.objects.create(user=new_user)
             return render(request,
                           'register_done.html',
                           {'new_user': new_user})
@@ -71,6 +76,7 @@ def edit(request):
         if user_form.is_valid() and player_form.is_valid():
             user_form.save()
             player_form.save()
+            return HttpResponseRedirect('/')
     else:
         user_form = UserEditForm(instance=request.user)
         player_form = PlayerEditForm(
