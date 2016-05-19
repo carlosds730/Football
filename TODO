@@ -1,4 +1,4 @@
-TODO: See what to do with the admin.
-TODO: Find out how to use an inline inside an inline.
+DONE: See what to do with the admin.
+DONE: Find out how to use an inline inside an inline.
 TODO: Change the look of login, register and passwords views
 TODO: WTF with Wand and Python35
