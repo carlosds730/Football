@@ -183,6 +183,16 @@ class PlayerPerformance(models.Model):
     def __str__(self):
         return "Jornada %s (%s)" % (self.fixture.number, str(self.fixture.date))
 
+    def to_list(self, first_column=False):
+        """
+        See Stats.to_list for references.
+        :param first_column: The first element of the list (optional)
+        :type first_column: str or False
+        :return: Stat info as a list
+        :rtype: list
+        """
+        return self.stat.to_list(first_column=first_column)
+
 
 class Fixture(models.Model):
     class Meta:
@@ -229,6 +239,31 @@ class Stats(models.Model):
                                   help_text='Estadísticas totales del jugador. Incluye todas las temporadas')
 
     stat = models.OneToOneField('PlayerPerformance', related_name='stat', blank=True, null=True)
+
+    @property
+    def name(self):
+        if self.player:
+            return self.player.name
+        elif self.stat:
+            return self.stat.player.name
+        return None
+
+    def to_list(self, first_column=False):
+        """
+        Returns a list containing the numerical info of this Stat. The first element of the list can be settled using
+        the parameter first_column, if this parameter is not present (by default it isn't) the first element will be
+        the name of the player associated with this stat.
+        :param first_column: The first element of the list (optional)
+        :type first_column: str or False
+        :return: Stat info as a list
+        :rtype: list
+        """
+        if first_column:
+            return [first_column, self.games_played, self.wins, self.draws, self.losses, self.goals, self.assists,
+                    self.elo]
+        else:
+            return [self.name, self.games_played, self.wins, self.draws, self.losses, self.goals, self.assists,
+                    self.elo]
 
     def save(self, *args, **kwargs):
         """
