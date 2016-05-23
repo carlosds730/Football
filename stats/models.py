@@ -75,18 +75,6 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
         return None
 
 
-# class PlayerCreator(models.Manager):
-#     def create_player_from_user(self, user):
-#         """
-#         This method creates a PlayerPerformance object given of a player, a fixture and a Stats object.
-#         If the stat parameter isn't provided you can pass the necessary to create one, if you don't, an Stats object
-#         with all data set to 0 will be created.
-#         """
-#         player = self.create(name=user.username, user=user)
-#
-#         return player
-
-
 class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
@@ -149,8 +137,8 @@ class PlayerPerformanceCreator(models.Manager):
     def create_performance(self, player, fixture, stat=None, games_played=0, wins=0, draws=0, losses=0, goals=0,
                            assists=0):
         """
-        This method creates a PlayerPerformance object given of a player, a fixture and a Stats object.
-        If the stat parameter isn't provided you can pass the necessary to create one, if you don't, an Stats object
+        This method creates a PlayerPerformance object given a player, a fixture and a Stats object.
+        If the stat parameter isn't provided you can pass the necessary info to create one, if you don't, an Stats object
         with all data set to 0 will be created.
         """
         if not stat:
@@ -258,11 +246,6 @@ class Stats(models.Model):
         :rtype: double
         """
         return calculate_elo_simple(self.games_played, self.wins, self.losses, self.draws, self.goals, self.assists)
-
-
-class ActivePlayers(models.Manager):
-    def get_queryset(self):
-        return super(ActivePlayers, self).get_queryset().filter(author='Roald Dahl')
 
 
 class Season(models.Model):
