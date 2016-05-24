@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate, login
 from .forms import UserRegistrationForm, PlayerEditForm, UserEditForm
 from django.contrib.auth.decorators import login_required
 
+ORDER_BY = [('games_played', 'Games'), ('wins', 'Wins'), ('draws', 'Draws'), ('losses', 'Losses'), ('goals', 'Goals'),
+            ('assists', 'Assists'), ('elo', 'ELO')]
+
 
 def wrapper(request, page, context):
     context.update({
@@ -33,8 +36,37 @@ def home(request):
         return wrapper(request, 'home.html', context)
 
 
-def season(request, season_num):
-    raise NotImplemented()
+def season(request, season_num, order='elo'):
+    season_info = models.Season.objects.get(number=season_num)
+    #
+    active_players, inactive_players = season_info.global_info()
+    reverse = '-' in order
+
+    if order in ('elo', '-elo'):
+        active_players.sort(key=lambda x: x.elo, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.elo, reverse=not reverse)
+    elif order in ('wins', '-wins'):
+        active_players.sort(key=lambda x: x.wins, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.wins, reverse=not reverse)
+    elif order in ('draws', '-draws'):
+        active_players.sort(key=lambda x: x.draws, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.draws, reverse=not reverse)
+    elif order in ('losses', '-losses'):
+        active_players.sort(key=lambda x: x.losses, reverse=reverse)
+        inactive_players.sort(key=lambda x: x.losses, reverse=reverse)
+    elif order in ('goals', '-goals'):
+        active_players.sort(key=lambda x: x.goals, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.goals, reverse=not reverse)
+    elif order in ('assists', '-assists'):
+        active_players.sort(key=lambda x: x.assists, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.assists, reverse=not reverse)
+    elif order in ('games_played', '-games_played'):
+        active_players.sort(key=lambda x: x.games_played, reverse=not reverse)
+        inactive_players.sort(key=lambda x: x.games_played, reverse=not reverse)
+
+    return wrapper(request, 'season.html',
+                   {'active_players': active_players, 'inactive_players': inactive_players, 'season_num': season_info,
+                    'order': order, 'order_by': ORDER_BY})
 
 
 def general(request, order):

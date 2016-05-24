@@ -9,6 +9,7 @@ import os
 from stats.extra_functions import calculate_elo_simple
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.db.models import Count
 
 
 # TODO: get_last season.
@@ -77,6 +78,13 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
         return None
 
 
+# TODO: The result of this method should me cached.
+def get_minimum_total_games():
+    min_games = Season.objects.annotate(num_fix=Count('fixtures')).aggregate(total_fix=Sum('num_fix'))
+    print(min_games)
+    return min_games['total_fix']
+
+
 class Player(models.Model):
     class Meta:
         verbose_name = "Jugador"
@@ -93,6 +101,10 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_active(self):
+        return self.global_stats.games_played >= 3 * get_minimum_total_games()
 
     @property
     def name(self):
@@ -297,6 +309,10 @@ class Season(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+    @property
+    def min_num_games(self):
+        return 3 * self._num_fixtures
 
     @property
     def init_date(self):

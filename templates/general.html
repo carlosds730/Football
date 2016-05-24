@@ -2,6 +2,7 @@
 {#TODO: We should be able to sort ascending and descending#}
 {% block main_section %}
     <div class="container-fluid">
+
         <table class="table table-hover">
             <thead>
             <tr>
@@ -19,7 +20,11 @@
             <tbody>
 
             {% for player in players %}
-                <tr>
+                {% if player.is_active %}
+                    <tr>
+                        {% else %}
+                    <tr class="inactive_player">
+                {% endif %}
                     <th class="text-center" scope="row"> {{ forloop.counter }}</th>
                     <td class="text-left">{{ player.name }}</td>
                     <td class="text-center">{{ player.global_stats.games_played }}</td>

@@ -2,33 +2,77 @@
 {#TODO: We should be able to sort ascending and descending#}
 {% block main_section %}
     <div class="container-fluid">
+        <h1 style="text-align: center" id="active_players">Active players (more than {{ season_num.min_num_games }}
+            games played
+            )</h1>
         <table class="table table-hover">
             <thead>
             <tr>
                 <th class="text-center"> Ranking</th>
                 <th class="text-left"> Player's Name</th>
-                <th class="text-center"><a href="{% url 'general' 'games_played' %}"> Games</a></th>
-                <th class="text-center"><a href="{% url 'general' 'wins' %}"> Wins</a></th>
-                <th class="text-center"><a href="{% url 'general' 'draws' %}"> Draws</a></th>
-                <th class="text-center"><a href="{% url 'general' 'losses' %}"> Losses</a></th>
-                <th class="text-center"><a href="{% url 'general' 'goals' %}"> Goals</a></th>
-                <th class="text-center"><a href="{% url 'general' 'assists' %}"> Assists</a></th>
-                <th class="text-center"><a href="{% url 'general' 'elo' %}"> ELO</a></th>
+                {% for param in order_by %}
+                    {% if order == param.0 %}
+                        <th class="text-center"><a
+                                href="{{ season_num.get_absolute_url }}-{{ param.0 }}">
+                            {{ param.1 }}</a></th>
+                    {% else %}
+                        <th class="text-center"><a
+                                href="{% url 'season' season_num=season_num.number order=param.0 %}">
+                            {{ param.1 }}</a></th>
+                    {% endif %}
+                {% endfor %}
             </tr>
             </thead>
             <tbody>
 
-            {% for player in players %}
+            {% for player in active_players %}
                 <tr>
                     <th class="text-center" scope="row"> {{ forloop.counter }}</th>
-                    <td class="text-left">{{ player.name }}</td>
-                    <td class="text-center">{{ player.global_stats.games_played }}</td>
-                    <td class="text-center">{{ player.global_stats.wins }}</td>
-                    <td class="text-center">{{ player.global_stats.draws }}</td>
-                    <td class="text-center">{{ player.global_stats.losses }}</td>
-                    <td class="text-center">{{ player.global_stats.goals }}</td>
-                    <td class="text-center">{{ player.global_stats.assists }}</td>
-                    <td class="text-center">{{ player.global_stats.elo }}</td>
+                    <td class="text-left">{{ player.player.name }}</td>
+                    <td class="text-center">{{ player.games_played }}</td>
+                    <td class="text-center">{{ player.wins }}</td>
+                    <td class="text-center">{{ player.draws }}</td>
+                    <td class="text-center">{{ player.losses }}</td>
+                    <td class="text-center">{{ player.goals }}</td>
+                    <td class="text-center">{{ player.assists }}</td>
+                    <td class="text-center">{{ player.elo }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <h1 style="text-align: center" id="inactive_players">Inactive players</h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="text-center"> Ranking</th>
+                <th class="text-left"> Player's Name</th>
+                {% for param in order_by %}
+                    {% if order == param.0 %}
+                        <th class="text-center"><a
+                                href="{{ season_num.get_absolute_url }}-{{ param.0 }}#inactive_players">
+                            {{ param.1 }}</a></th>
+                    {% else %}
+                        <th class="text-center"><a
+                                href="{% url 'season' season_num=season_num.number order=param.0 %}#inactive_players">
+                            {{ param.1 }}</a></th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for player in inactive_players %}
+                <tr>
+                    <th class="text-center" scope="row"> {{ forloop.counter }}</th>
+                    <td class="text-left">{{ player.player.name }}</td>
+                    <td class="text-center">{{ player.games_played }}</td>
+                    <td class="text-center">{{ player.wins }}</td>
+                    <td class="text-center">{{ player.draws }}</td>
+                    <td class="text-center">{{ player.losses }}</td>
+                    <td class="text-center">{{ player.goals }}</td>
+                    <td class="text-center">{{ player.assists }}</td>
+                    <td class="text-center">{{ player.elo }}</td>
                 </tr>
             {% endfor %}
 
@@ -37,3 +81,4 @@
     </div>
 
 {% endblock %}
+

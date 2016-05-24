@@ -132,7 +132,7 @@
                                         <ul class="dropdown-menu c-menu-type-inline">
                                             {% for season in seasons %}
                                                 <li>
-                                                    <a href="{% url 'season' season.number %}">{{ season.number }}</a>
+                                                    <a href={{ season.get_absolute_url }}>{{ season.number }}</a>
                                                 </li>
                                             {% endfor %}
                                         </ul>

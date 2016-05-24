@@ -19,4 +19,4 @@ def calculate_elo_simple(jj, w, l, d, g, a):
         return 0
     else:
         num = 0.5 * g + 0.25 * a + 0.2 * w + (0.2 / 3) * d - 0.1 * l
-        return num / jj
+        return round(num / jj, 5)
