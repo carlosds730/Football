@@ -65,12 +65,14 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
                                                       draws=Sum('stat__draws'), goals=Sum('stat__goals'),
                                                       assists=Sum('stat__assists'))
     if data:
-        return Stats(games_played=data['games_played'],
+        stat = Stats(games_played=data['games_played'],
                      wins=data['wins'],
                      losses=data['losses'],
                      draws=data['draws'],
                      goals=data['goals'],
                      assists=data['assists'])
+        stat.elo = stat.calculate_elo()
+        return stat
     else:
         return None
 
@@ -325,6 +327,30 @@ class Season(models.Model):
         :rtype: int
         """
         return self.fixtures.count()
+
+    # TODO: The result of this method should be cached
+    def global_info(self):
+        """
+        Calculates the info of the players for the current season. It returns a list of stat objects where stat.player
+        is the player.
+        :return: A list of Stat objects (not stored in database).
+        :rtype: list
+        """
+        all_performances = PlayerPerformance.objects.filter(fixture__season__number=self.number)
+        active_players = []
+        inactive_players = []
+        for player in Player.objects.all():
+            # This stat objects are only stored in memory
+            stat = get_total_stats(player_performance_query_set=all_performances.filter(player=player))
+            if stat:
+                stat.player = player
+            else:
+                continue
+            if stat.games_played < 3 * self._num_fixtures:
+                inactive_players.append(stat)
+            else:
+                active_players.append(stat)
+        return active_players, inactive_players
 
     def get_absolute_url(self):
         return reverse('season', args=[self.number])
