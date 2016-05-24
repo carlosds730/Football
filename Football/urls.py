@@ -52,6 +52,7 @@ urlpatterns = [
 # use surl to set the views that receive arguments
 urlpatterns += [
     surl('/season/<int:season_num>/', views.season, name='season'),
+    surl('/season/<int:season_num>/<slug:order>/', views.season, name='season'),
     surl('/general/<word:order>/', views.general, name='general'),
 ]
 
