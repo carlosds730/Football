@@ -81,7 +81,6 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
 # TODO: The result of this method should me cached.
 def get_minimum_total_games():
     min_games = Season.objects.annotate(num_fix=Count('fixtures')).aggregate(total_fix=Sum('num_fix'))
-    print(min_games)
     return min_games['total_fix']
 
 
@@ -353,6 +352,7 @@ class Season(models.Model):
         :rtype: list
         """
         all_performances = PlayerPerformance.objects.filter(fixture__season__number=self.number)
+        num_fixtures = self._num_fixtures
         active_players = []
         inactive_players = []
         for player in Player.objects.all():
@@ -362,7 +362,7 @@ class Season(models.Model):
                 stat.player = player
             else:
                 continue
-            if stat.games_played < 3 * self._num_fixtures:
+            if stat.games_played < 3 * num_fixtures:
                 inactive_players.append(stat)
             else:
                 active_players.append(stat)
