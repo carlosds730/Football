@@ -53,7 +53,8 @@ urlpatterns = [
 urlpatterns += [
     surl('/season/<int:season_num>/', views.season, name='season'),
     surl('/season/<int:season_num>/<slug:order>/', views.season, name='season'),
-    surl('/general/<word:order>/', views.general, name='general'),
+    surl('/general/', views.general, name='general'),
+    surl('/general/<slug:order>/', views.general, name='general'),
 ]
 
 # This part is only to set serve the static files during development

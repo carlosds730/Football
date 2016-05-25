@@ -80,8 +80,7 @@ def get_total_stats(stats_query_set=None, player_performance_query_set=None):
 
 # TODO: The result of this method should me cached.
 def get_minimum_total_games():
-    min_games = Season.objects.annotate(num_fix=Count('fixtures')).aggregate(total_fix=Sum('num_fix'))
-    return min_games['total_fix']
+    return Fixture.objects.count()
 
 
 class Player(models.Model):

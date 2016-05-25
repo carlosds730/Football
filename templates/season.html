@@ -1,84 +1,103 @@
 {% extends 'home.html' %}
-{#TODO: We should be able to sort ascending and descending#}
+{#DONE: We should be able to sort ascending and descending#}
 {% block main_section %}
     <div class="container-fluid">
-        <h1 style="text-align: center" id="active_players">Active players (more than {{ season_num.min_num_games }}
-            games played
-            )</h1>
+        <h1 style="text-align: center" id="active_players">Active players (at least {{ min_num_games }} games
+            played)</h1>
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="text-center"> Ranking</th>
-                <th class="text-left"> Player's Name</th>
-                {% for param in order_by %}
-                    {% if order == param.0 %}
-                        <th class="text-center"><a
-                                href="{{ season_num.get_absolute_url }}-{{ param.0 }}">
+                {% block table_headers %}
+                    <th class="text-center"> Ranking</th>
+                    <th class="text-left"> Player's Name</th>
+                    {% for param in order_by %}
+                        {% if order == param.0 %}
+                            <th class="text-center order-column"><a
+                                    href="{{ season_num.get_absolute_url }}-{{ param.0 }}">
+                                {{ param.1 }}</a></th>
+                        {% else %}
+                            {% if order == param.2 %}
+                                <th class="text-center order-column">
+                                    {% else %}
+                                <th class="text-center">
+                            {% endif %}
+                        <a href="{% url 'season' season_num=season_num.number order=param.0 %}">
                             {{ param.1 }}</a></th>
-                    {% else %}
-                        <th class="text-center"><a
-                                href="{% url 'season' season_num=season_num.number order=param.0 %}">
-                            {{ param.1 }}</a></th>
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
             </tr>
             </thead>
             <tbody>
-
-            {% for player in active_players %}
-                <tr>
-                    <th class="text-center" scope="row"> {{ forloop.counter }}</th>
-                    <td class="text-left">{{ player.player.name }}</td>
-                    <td class="text-center">{{ player.games_played }}</td>
-                    <td class="text-center">{{ player.wins }}</td>
-                    <td class="text-center">{{ player.draws }}</td>
-                    <td class="text-center">{{ player.losses }}</td>
-                    <td class="text-center">{{ player.goals }}</td>
-                    <td class="text-center">{{ player.assists }}</td>
-                    <td class="text-center">{{ player.elo }}</td>
-                </tr>
-            {% endfor %}
-
+            {% block active_players %}
+                {% for player in active_players %}
+                    <tr>
+                        <th class="text-center" scope="row"> {{ forloop.counter }}</th>
+                        <td class="text-left">{{ player.player.name }}</td>
+                        <td class="text-center">{{ player.games_played }}</td>
+                        <td class="text-center">{{ player.wins }}</td>
+                        <td class="text-center">{{ player.draws }}</td>
+                        <td class="text-center">{{ player.losses }}</td>
+                        <td class="text-center">{{ player.goals }}</td>
+                        <td class="text-center">{{ player.assists }}</td>
+                        <td class="text-center">{{ player.elo }}</td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
             </tbody>
         </table>
         <h1 style="text-align: center" id="inactive_players">Inactive players</h1>
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="text-center"> Ranking</th>
-                <th class="text-left"> Player's Name</th>
-                {% for param in order_by %}
-                    {% if order == param.0 %}
-                        <th class="text-center"><a
-                                href="{{ season_num.get_absolute_url }}-{{ param.0 }}#inactive_players">
+                {% block inactive_players_headers %}
+                    <th class="text-center"> Ranking</th>
+                    <th class="text-left"> Player's Name</th>
+                    {% for param in order_by %}
+                        {% if order == param.0 %}
+                            <th class="text-center order-column"><a
+                                    href="{{ season_num.get_absolute_url }}-{{ param.0 }}#inactive_players">
+                                {{ param.1 }}</a></th>
+                        {% else %}
+                            {% if order == param.2 %}
+                                <th class="text-center order-column">
+                                    {% else %}
+                                <th class="text-center">
+                            {% endif %}
+                        <a href="{% url 'season' season_num=season_num.number order=param.0 %}#inactive_players">
                             {{ param.1 }}</a></th>
-                    {% else %}
-                        <th class="text-center"><a
-                                href="{% url 'season' season_num=season_num.number order=param.0 %}#inactive_players">
-                            {{ param.1 }}</a></th>
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
             </tr>
             </thead>
             <tbody>
+            {% block inactive_players %}
+                {% for player in inactive_players %}
+                    <tr>
+                        <th class="text-center" scope="row"> {{ forloop.counter }}</th>
+                        <td class="text-left">{{ player.player.name }}</td>
+                        <td class="text-center">{{ player.games_played }}</td>
+                        <td class="text-center">{{ player.wins }}</td>
+                        <td class="text-center">{{ player.draws }}</td>
+                        <td class="text-center">{{ player.losses }}</td>
+                        <td class="text-center">{{ player.goals }}</td>
+                        <td class="text-center">{{ player.assists }}</td>
+                        <td class="text-center">{{ player.elo }}</td>
+                    </tr>
+                {% endfor %}
 
-            {% for player in inactive_players %}
-                <tr>
-                    <th class="text-center" scope="row"> {{ forloop.counter }}</th>
-                    <td class="text-left">{{ player.player.name }}</td>
-                    <td class="text-center">{{ player.games_played }}</td>
-                    <td class="text-center">{{ player.wins }}</td>
-                    <td class="text-center">{{ player.draws }}</td>
-                    <td class="text-center">{{ player.losses }}</td>
-                    <td class="text-center">{{ player.goals }}</td>
-                    <td class="text-center">{{ player.assists }}</td>
-                    <td class="text-center">{{ player.elo }}</td>
-                </tr>
-            {% endfor %}
-
+            {% endblock %}
             </tbody>
         </table>
     </div>
 
 {% endblock %}
+{% block other_scripts %}
+    {#TODO: FInd a beter way to do this. I do not like the way it shows in the browser#}
+    <script>
+        var index = $("th.order-column").parent().children().index($("tr>th.order-column")) + 1;
+        $("tr td:nth-child(" + index + ")").addClass("order-column")
+    </script>
 
+{% endblock %}

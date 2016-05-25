@@ -1,44 +1,70 @@
-{% extends 'home.html' %}
-{#TODO: We should be able to sort ascending and descending#}
-{% block main_section %}
-    <div class="container-fluid">
+{% extends 'season.html' %}
+{% block table_headers %}
+    <th class="text-center"> Ranking</th>
+    <th class="text-left"> Player's Name</th>
+    {% for param in order_by %}
+        {% if order == param.0 %}
+            <th class="text-center order-column"><a
+                    href="{% url 'general' %}-{{ param.0 }}">
+                {{ param.1 }}</a></th>
+        {% else %}
+            {% if order == param.2 %}
+                <th class="text-center order-column">
+                    {% else %}
+                <th class="text-center">
+            {% endif %}
+        <a href="{% url 'general' order=param.0 %}">
+            {{ param.1 }}</a></th>
+        {% endif %}
 
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th class="text-center"> Ranking</th>
-                <th class="text-left"> Player's Name</th>
-                <th class="text-center"><a href="{% url 'general' 'games_played' %}"> Games</a></th>
-                <th class="text-center"><a href="{% url 'general' 'wins' %}"> Wins</a></th>
-                <th class="text-center"><a href="{% url 'general' 'draws' %}"> Draws</a></th>
-                <th class="text-center"><a href="{% url 'general' 'losses' %}"> Losses</a></th>
-                <th class="text-center"><a href="{% url 'general' 'goals' %}"> Goals</a></th>
-                <th class="text-center"><a href="{% url 'general' 'assists' %}"> Assists</a></th>
-                <th class="text-center"><a href="{% url 'general' 'elo' %}"> ELO</a></th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {% for player in players %}
-                {% if player.is_active %}
-                    <tr>
-                        {% else %}
-                    <tr class="inactive_player">
-                {% endif %}
-                    <th class="text-center" scope="row"> {{ forloop.counter }}</th>
-                    <td class="text-left">{{ player.name }}</td>
-                    <td class="text-center">{{ player.global_stats.games_played }}</td>
-                    <td class="text-center">{{ player.global_stats.wins }}</td>
-                    <td class="text-center">{{ player.global_stats.draws }}</td>
-                    <td class="text-center">{{ player.global_stats.losses }}</td>
-                    <td class="text-center">{{ player.global_stats.goals }}</td>
-                    <td class="text-center">{{ player.global_stats.assists }}</td>
-                    <td class="text-center">{{ player.global_stats.elo }}</td>
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
-
+    {% endfor %}
+{% endblock %}
+{% block active_players %}
+    {% for player in active_players %}
+        <tr class="player-line">
+            <th class="text-center" scope="row"> {{ forloop.counter }}</th>
+            <td class="text-left">{{ player.name }}</td>
+            <td class="text-center">{{ player.global_stats.games_played }}</td>
+            <td class="text-center">{{ player.global_stats.wins }}</td>
+            <td class="text-center">{{ player.global_stats.draws }}</td>
+            <td class="text-center">{{ player.global_stats.losses }}</td>
+            <td class="text-center">{{ player.global_stats.goals }}</td>
+            <td class="text-center">{{ player.global_stats.assists }}</td>
+            <td class="text-center">{{ player.global_stats.elo }}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+{% block inactive_players_headers %}
+    <th class="text-center"> Ranking</th>
+    <th class="text-left"> Player's Name</th>
+    {% for param in order_by %}
+        {% if order == param.0 %}
+            <th class="text-center order-column"><a
+                    href="{% url 'general' %}-{{ param.0 }}#inactive_players">
+                {{ param.1 }}</a></th>
+        {% else %}
+            {% if order == param.2 %}
+                <th class="text-center order-column">
+                    {% else %}
+                <th class="text-center">
+            {% endif %}
+        <a href="{% url 'general' order=param.0 %}#inactive_players">
+            {{ param.1 }}</a></th>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+{% block inactive_players %}
+    {% for player in inactive_players %}
+        <tr>
+            <th class="text-center" scope="row"> {{ forloop.counter }}</th>
+            <td class="text-left">{{ player.name }}</td>
+            <td class="text-center">{{ player.global_stats.games_played }}</td>
+            <td class="text-center">{{ player.global_stats.wins }}</td>
+            <td class="text-center">{{ player.global_stats.draws }}</td>
+            <td class="text-center">{{ player.global_stats.losses }}</td>
+            <td class="text-center">{{ player.global_stats.goals }}</td>
+            <td class="text-center">{{ player.global_stats.assists }}</td>
+            <td class="text-center">{{ player.global_stats.elo }}</td>
+        </tr>
+    {% endfor %}
 {% endblock %}
