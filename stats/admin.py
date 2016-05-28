@@ -49,7 +49,17 @@ class MainAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = ['id', 'name', 'url']
 
 
+class ResultInline(admin.StackedInline):
+    model = models.Results
+    extra = 1
+
+
+class AchivementAdmin(admin.ModelAdmin):
+    inlines = [ResultInline]
+
+
 admin.site.register(models.Fixture, FixtureAdmin)
+admin.site.register(models.Achievements, AchivementAdmin)
 admin.site.register(models.Player, PlayersAdmin)
 admin.site.register(models.Season, SeasonAdmin)
 admin.site.register(models.MainPictures, MainAdmin)

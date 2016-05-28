@@ -5,6 +5,7 @@ from decimal import *
 from stats.extra_functions import validate_fixture
 from django.db.models import Sum
 import datetime
+import json
 import os
 from stats.extra_functions import calculate_elo_simple
 from django.core.urlresolvers import reverse
@@ -383,3 +384,32 @@ class MainPictures(models.Model):
 
     def url(self):
         return self.picture.url
+
+
+class Achievements(models.Model):
+    class Meta:
+        verbose_name = 'Logro'
+        verbose_name_plural = 'Logros'
+
+    function_name = models.CharField(verbose_name="Nombre de la funcion", max_length=100, null=True)
+
+    def __str__(self):
+        return self.function_name
+
+
+class Results(models.Model):
+    class Meta:
+        verbose_name = 'Resultado'
+        verbose_name_plural = 'Resultados'
+        unique_together = ('achievement', 'fixture')
+        ordering = ('fixture',)
+
+    result = models.CharField(verbose_name='Resultado', max_length=1000, null=True)
+
+    achievement = models.ForeignKey('Achievements', verbose_name='Logro', related_name='results')
+
+    fixture = models.ForeignKey('Fixture', verbose_name='Jornada', related_name='function_results')
+
+    def export_to_dict(self):
+        tmp = json.loads(self.result)
+        return tmp['result']
