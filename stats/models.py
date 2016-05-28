@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from django.db import models
+from django.template.defaultfilters import default
 from sorl.thumbnail import ImageField
 from decimal import *
 from stats.extra_functions import validate_fixture
@@ -392,6 +393,8 @@ class Achievements(models.Model):
         verbose_name_plural = 'Logros'
 
     function_name = models.CharField(verbose_name="Nombre de la funcion", max_length=100, null=True)
+
+    description = models.TextField(verbose_name='Descripcion', help_text='Descripcion de la estadistica')
 
     def __str__(self):
         return self.function_name
