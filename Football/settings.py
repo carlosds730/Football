@@ -114,7 +114,7 @@ MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
+# THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
 
 # User framework
 from django.core.urlresolvers import reverse_lazy
@@ -140,5 +140,5 @@ LOGOUT_URL = reverse_lazy('logout')
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')  # change this to a proper location
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
