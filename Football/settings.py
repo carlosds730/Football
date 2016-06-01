@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -108,6 +109,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.wand_engine.Engine'
 
 # User framework
@@ -133,3 +139,6 @@ LOGOUT_URL = reverse_lazy('logout')
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')  # change this to a proper location
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
