@@ -12,3 +12,4 @@ sorl-thumbnail==12.3
 Wand==0.4.2
 wheel==0.26.0
 whitenoise==3.2
+gunicorn
