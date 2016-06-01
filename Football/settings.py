@@ -139,6 +139,6 @@ LOGOUT_URL = reverse_lazy('logout')
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')  # change this to a proper location
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+#
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
