@@ -1,1 +1,1 @@
-web: gunicorn herokuTest.wsgi --log-file -
+web: gunicorn Football.wsgi --log-file -
